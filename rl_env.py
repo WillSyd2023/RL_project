@@ -58,7 +58,7 @@ class BitEnv(gym.Env):
         
         # Action and observation spaces, which only contain '1' and '0'
         self.action_space = gym.spaces.Box(
-            low=np.array([0, 0]), high=np.array([1, np.inf]), dtype=np.uint64
+            low=np.array([0, 0]), high=np.array([1, 2**63 - 2]), dtype=np.uint64
         )
         self.observation_space = gym.spaces.Discrete(2)
 
