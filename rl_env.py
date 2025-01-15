@@ -78,6 +78,10 @@ class BitEnv(gym.Env):
         return {"p type": self._p_type}
     
     def reset(self, *, seed: Optional[int] = None, options: Optional[dict] = None):
+        """Reset function
+
+        Sample observation with default step 0
+        """
         # Initialise seed and sample obs.
         super().reset(seed=seed)
         self._sample_obs()
@@ -93,7 +97,7 @@ class BitEnv(gym.Env):
         - No truncation criteria by default (use TimeLimit wrapper)
         """
         # Sample observation, providing current number of steps
-        self._sample_obs(action[1])
+        self._sample_obs(action[1] + 1)
 
         # See if agent guess matches sampled bit
         reward = 1 if self._obs == action[0] else -1
