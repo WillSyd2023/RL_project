@@ -14,7 +14,6 @@ class BitEnv(gym.Env):
       second element is number of steps taken so far
     - Sample from state space with probability 'p' for '1'
     - 'p' can be constant or function with parameter 'n' (current agent step)
-    - Returns award of +1 if sample matches agent's guess; -1 if mismatch
     """
 
     def __init__(self, p: float | Callable[[int], float]=0.5):
@@ -85,5 +84,28 @@ class BitEnv(gym.Env):
 
         return self._obs, self._get_info()
 
-    # def sample(self, action):
-        #
+    def step(self, action):
+        """Step function
+
+        - Sample '1'/'0' from environment as specified
+        - Returns award of +1 if sample matches agent's guess; -1 if mismatch
+        - No termination criteria
+        - No truncation criteria by default (use TimeLimit wrapper)
+        """
+        # Sample observation, providing current number of steps
+        self._sample_obs(action[1])
+
+        # See if agent guess matches sampled bit
+        reward = 1 if self._obs == action[0] else -1
+
+        terminated = False
+        truncated = False
+
+        return self._obs, reward, terminated, truncated, self._get_info()
+
+    def render(self):
+        """Render function
+
+        I don't think there is any rendering requirement at the moment
+        """
+        return
