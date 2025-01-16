@@ -27,20 +27,27 @@ class BitEnv(gym.Env):
         # If p is function of n
         if callable(p):
             # Do (imperfect) numerical check for non-constant probability
-            # Check minimum value possible for p
-            sol = minimize(lambda x: p(x[0]), [1], bounds=[(0, np.inf)])
-            x = round(sol.x[0])
-            if p(x) < 0:
+            try:
+                # Check minimum value possible for p
+                sol = minimize(lambda x: p(x[0]), [1], bounds=[(0, np.inf)])
+                x = round(sol.x[0])
+                if p(x) < 0:
+                    raise ValueError()
+                # Check maximum value possible for p
+                sol = minimize(lambda x: -p(x[0]), [1], bounds=[(0, np.inf)])
+                x = round(sol.x[0])
+                if p(x) > 1:
+                    raise ValueError()
+            except TypeError as e:
+                raise TypeError("Function 'p' probably returns nothing") from e
+            except ZeroDivisionError as e:
+                raise ZeroDivisionError(
+                    "Function 'p' may cause zero division"
+                ) from e
+            except ValueError as e:
                 raise ValueError(
                     "Function 'p'=" + str(p(x)) + " when x=" + str(x)
-                )
-            # Check maximun value possible for p
-            sol = minimize(lambda x: -p(x[0]), [1], bounds=[(0, np.inf)])
-            x = round(sol.x[0])
-            if p(x) > 1:
-                raise ValueError(
-                    "Function 'p'=" + str(p(x)) + " when x=" + str(x)
-                )
+                ) from e
 
             # Take note of type of p
             self._p_type = "function of n"
