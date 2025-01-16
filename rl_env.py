@@ -63,10 +63,8 @@ class BitEnv(gym.Env):
         # All good
         self._p = p
         
-        # Action and observation spaces, which only contain '1' and '0'
-        self.action_space = gym.spaces.Box(
-            low=np.array([0, 0]), high=np.array([1, 2**63 - 2]), dtype=np.uint64
-        )
+        # Action and observation spaces
+        self.action_space = gym.spaces.Discrete(2)
         self.observation_space = gym.spaces.Discrete(2)
 
         self._obs = 0
@@ -95,7 +93,7 @@ class BitEnv(gym.Env):
 
         return self._obs, self._get_info()
 
-    def step(self, action):
+    def step(self, action, n=0):
         """Step function
 
         - Sample '1'/'0' from environment as specified
@@ -104,10 +102,10 @@ class BitEnv(gym.Env):
         - No truncation criteria by default (use TimeLimit wrapper)
         """
         # Sample observation, providing current number of steps
-        self._sample_obs(action[1] + 1)
+        self._sample_obs(n + 1)
 
         # See if agent guess matches sampled bit
-        reward = 1 if self._obs == action[0] else -1
+        reward = 1 if self._obs == action else -1
 
         terminated = False
         truncated = False
