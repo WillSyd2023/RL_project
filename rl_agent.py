@@ -17,6 +17,7 @@ class Agent(metaclass=ABCMeta):
             env: the training environment 
         """
         self.env = env
+        self.steps = 0
         self.training_error = []
 
     @abstractmethod
