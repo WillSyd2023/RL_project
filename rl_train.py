@@ -3,7 +3,7 @@ import gymnasium as gym
 from gymnasium.wrappers import RecordEpisodeStatistics, TimeLimit
 from rl_agent import Agent
 
-def train_ql(
+def rl_train(
         env: gym.Env,
         agent: Agent,
         time_limit: int = 100_000,
