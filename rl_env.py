@@ -73,7 +73,7 @@ class BitEnv(gym.Env):
         self._obs = 0
 
     def _sample_obs(self):
-        if callable(p):
+        if callable(self._p):
             p = self._p(self._steps)
         else:
             p = self._p

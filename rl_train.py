@@ -7,8 +7,8 @@ def rl_train(
         env: gym.Env,
         agent: Agent,
         time_limit: int = 100_000,
-        n_eps: int = 100_000
-    ) -> Agent:
+        n_eps: int = 1000
+    ):
     """
     Train an agent
 
@@ -45,4 +45,4 @@ def rl_train(
         
         agent.decay_epsilon()
 
-    return agent
+    return (env, agent)
