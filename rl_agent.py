@@ -17,7 +17,6 @@ class Agent(metaclass=ABCMeta):
             env: the training environment 
         """
         self.env = env
-        self.steps = 0
         self.training_error = []
 
     @abstractmethod
@@ -81,7 +80,7 @@ class QLAgent(Agent):
     def get_action(self, obs: int) -> int:
         """
         Returns the best action with probability (1 - epsilon)
-        otherwise a random action with probability epsilon to ensure exploration
+        or a random action with probability epsilon to ensure exploration
         """
         # with probability epsilon return a random action to explore the environment
         if np.random.random() < self.epsilon:
@@ -110,4 +109,5 @@ class QLAgent(Agent):
         self.training_error.append(temporal_difference)
     
     def decay_epsilon(self):
+        """Epsilon decay method"""
         self.epsilon = max(self.final_epsilon, self.epsilon - self.epsilon_decay)

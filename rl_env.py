@@ -67,11 +67,14 @@ class BitEnv(gym.Env):
         self.action_space = gym.spaces.Discrete(2)
         self.observation_space = gym.spaces.Discrete(2)
 
+        # Number of steps taken by agent so far
+        self._steps = 0
+
         self._obs = 0
 
-    def _sample_obs(self, n: int = 0):
+    def _sample_obs(self):
         if callable(p):
-            p = self._p(n)
+            p = self._p(self._steps)
         else:
             p = self._p
         if self.np_random.random() < p:
@@ -89,11 +92,12 @@ class BitEnv(gym.Env):
         """
         # Initialise seed and sample obs.
         super().reset(seed=seed)
+        self._steps = 0
         self._sample_obs()
 
         return self._obs, self._get_info()
 
-    def step(self, action, n=0):
+    def step(self, action):
         """Step function
 
         - Sample '1'/'0' from environment as specified
@@ -101,8 +105,11 @@ class BitEnv(gym.Env):
         - No termination criteria
         - No truncation criteria by default (use TimeLimit wrapper)
         """
+        # Update current number of steps
+        self._steps += 1
+
         # Sample observation, providing current number of steps
-        self._sample_obs(n + 1)
+        self._sample_obs()
 
         # See if agent guess matches sampled bit
         reward = 1 if self._obs == action else -1
