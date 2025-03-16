@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from tqdm import tqdm
 import gymnasium as gym
 from gymnasium.wrappers import RecordEpisodeStatistics, TimeLimit
-from rl_agent import Agent
+from rl_agent import Agent, QLAgent
 
 def train(
         env: gym.Env,
@@ -13,7 +13,7 @@ def train(
         n_eps: int = 1000
     ):
     """
-    Train an agent
+    Train a (Q-learning?) agent
 
     Mostly taken from https://gymnasium.farama.org/introduction/train_agent/
     in 18 Jan 2025
@@ -22,7 +22,7 @@ def train(
         env: Gymnasium environment; will get wrapped with:
          - TimeLimit
          - RecordEpisodeStatistics
-        agent: agent to train
+        agent: (Q-learning) agent to train
         time_limit: time limit (in steps) for an episode
         n_eps: number of episodes
 
