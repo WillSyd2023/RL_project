@@ -51,3 +51,17 @@ class PolicyEvalQL():
         self.ql_agent.q_values = defaultdict(
             lambda: np.ones(env.action_space.n) * 1.0001
         )
+    
+    def train_steps(
+        self,
+        steps: int = 5_000,
+    ):
+        """
+        Train the training agent to a specified number of steps
+
+        Warning: does not reset environment
+
+        Arg:
+            steps: number of steps to play; default is 5_000
+        """
+        # for _ in range(steps):
