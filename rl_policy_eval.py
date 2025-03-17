@@ -35,6 +35,7 @@ class PolicyEvalQL():
         - Q-values are initialised optimistically by setting all values to 1.0001
 
         Default environment is just BitEnv with p = 0.5
+        - Initialises initial training-agent observation with reset environment
 
         Arg:
             env: can insert environment here; default as just mentioned
@@ -51,6 +52,10 @@ class PolicyEvalQL():
         self.ql_agent.q_values = defaultdict(
             lambda: np.ones(env.action_space.n) * 1.0001
         )
+
+        # Initialise initial training-agent observation just in case
+        self.train_obs, _ = env.reset()
+
     
     def train_steps(
         self,
