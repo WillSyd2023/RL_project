@@ -35,6 +35,9 @@ class PolicyEvalQL():
         - Q-values are initialised optimistically by setting all values to 1.0001
 
         Default environment is just BitEnv with p = 0.5
+
+        Arg:
+            env: can insert environment here; default as just mentioned
         """
         self.ql_agent = QLAgent(
             env,
