@@ -110,7 +110,7 @@ class PolicyEvalQL():
         env = copy.deepcopy(self.original_env)
 
         # Initialise agent for testing
-        test_agent = type(self.ql_agent)(
+        test_agent = QLAgent(
             env,
             learning_rate = 0,
             initial_epsilon = 0,
