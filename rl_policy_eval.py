@@ -1,7 +1,9 @@
 from collections import defaultdict
+from tqdm import tqdm
 import copy
 import numpy as np
 import gymnasium as gym
+from gymnasium.wrappers import TimeLimit
 
 # Self-written code
 from rl_env import BitEnv
@@ -106,8 +108,9 @@ class PolicyEvalQL():
             time_limit: for a single episode
             n_eps: number of episodes to play
         """
-        # Copy environment from original
+        # Copy environment from original and set time limit
         env = copy.deepcopy(self.original_env)
+        env = TimeLimit(env, max_episode_steps=time_limit)
 
         # Initialise agent for testing
         test_agent = QLAgent(
