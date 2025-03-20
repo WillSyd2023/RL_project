@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from tqdm import tqdm
 import gymnasium as gym
 from gymnasium.wrappers import RecordEpisodeStatistics, TimeLimit
-from rl_agent import Agent, QLAgent
+from rl_agent import Agent
 
 def train(
         env: gym.Env,
