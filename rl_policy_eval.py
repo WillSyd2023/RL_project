@@ -94,8 +94,6 @@ class PolicyEvalQL():
     def avg_reward_per_eps(
         self,
         q_values,
-        learning_rate: float = 0.01,
-        discount_factor: float = 0.99,
         time_limit: int = 100_000,
         n_eps: int = 50,
     ):
@@ -103,15 +101,8 @@ class PolicyEvalQL():
         Use Q-values greedily on some episodes (with a new agent),
         get the average reward
 
-        Default agent parameters inspired by pp. 51 of Braun, 2021:
-        - learning rate is set to 0.01
-        - epsilon is constant, set to 0 (this can't even be changed via parameters)
-        - discount factor is 0.99
-
         Args:
-            q_values: to be used greedily
-            learning_rate: for assessing Q-learning agent
-            discount_factor: for assessing Q-learning agent
+            q_values: to be tested
             time_limit: for a single episode
             n_eps: number of episodes to play
         """
