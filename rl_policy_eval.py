@@ -106,4 +106,18 @@ class PolicyEvalQL():
             time_limit: for a single episode
             n_eps: number of episodes to play
         """
+        # Copy environment from original
+        env = copy.deepcopy(self.original_env)
+
+        # Initialise agent for testing
+        test_agent = type(self.ql_agent)(
+            env,
+            learning_rate = 0,
+            initial_epsilon = 0,
+            epsilon_decay = 0,
+            final_epsilon = 0,
+            discount_factor = 0
+        )
+        test_agent.q_values = q_values
+
         return
