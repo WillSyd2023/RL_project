@@ -1,4 +1,5 @@
 from collections import defaultdict
+import copy
 import numpy as np
 import gymnasium as gym
 
@@ -23,8 +24,8 @@ class PolicyEvalQL():
     """
     def __init__(
         self,
-        q_values = None,
         env: gym.Env = BitEnv(),
+        q_values = None,
         learning_rate: float = 0.01,
         initial_epsilon: float = 0.1,
         epsilon_decay: float = 0,
@@ -45,8 +46,10 @@ class PolicyEvalQL():
 
         Arg:
             env: can insert environment here; default as just mentioned
+            the other parameters set up the initial training agent
         """
-        self.env = env
+        self.original_env = env
+        self.training_env = copy.deepcopy(self.original_env)
 
         self.ql_agent = QLAgent(
             env,
@@ -56,6 +59,7 @@ class PolicyEvalQL():
             final_epsilon=final_epsilon,
             discount_factor=discount_factor,
         )
+
         if q_values is None:
             q_values = defaultdict(lambda: np.ones(env.action_space.n) * 1.0001)
         self.ql_agent.q_values = q_values
@@ -80,12 +84,26 @@ class PolicyEvalQL():
 
         for _ in range(steps):
             action = agent.get_action(obs)
-            next_obs, reward, terminated, _, _ = self.env.step(action)
+            next_obs, reward, terminated, _, _ = self.training_env.step(action)
 
             agent.update(obs, action, reward, terminated, next_obs)
             obs = next_obs
         
         self.train_obs = next_obs
 
-    def avg_reward_per_eps(self):
+    def avg_reward_per_eps(
+        self
+    ):
+        """
+        Use Q-values greedily on some episodes (with a new agent),
+        get the average reward
+
+        Default agent parameters inspired by pp. 51 of Braun, 2021:
+        - learning rate is set to 0.01
+        - epsilon is constant, set to 0 (this can't even be changed via parameters)
+        - discount factor is 0.99
+
+        Args:
+
+        """
         return
