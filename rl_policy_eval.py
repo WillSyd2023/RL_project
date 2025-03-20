@@ -92,7 +92,12 @@ class PolicyEvalQL():
         self.train_obs = next_obs
 
     def avg_reward_per_eps(
-        self
+        self,
+        q_values,
+        learning_rate: float = 0.01,
+        discount_factor: float = 0.99,
+        time_limit: int = 100_000,
+        n_eps: int = 50,
     ):
         """
         Use Q-values greedily on some episodes (with a new agent),
@@ -104,6 +109,10 @@ class PolicyEvalQL():
         - discount factor is 0.99
 
         Args:
-
+            q_values: to be used greedily
+            learning_rate: for assessing Q-learning agent
+            discount_factor: for assessing Q-learning agent
+            time_limit: for a single episode
+            n_eps: number of episodes to play
         """
         return
