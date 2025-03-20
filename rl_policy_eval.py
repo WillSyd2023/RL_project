@@ -23,7 +23,7 @@ class PolicyEvalQL():
     """
     def __init__(
         self,
-        q_values = defaultdict(lambda: np.ones(env.action_space.n) * 1.0001),
+        q_values = None,
         env: gym.Env = BitEnv(),
         learning_rate: float = 0.01,
         initial_epsilon: float = 0.1,
@@ -56,7 +56,8 @@ class PolicyEvalQL():
             final_epsilon=final_epsilon,
             discount_factor=discount_factor,
         )
-
+        if q_values is None:
+            q_values = defaultdict(lambda: np.ones(env.action_space.n) * 1.0001)
         self.ql_agent.q_values = q_values
 
         # Initialise initial training-agent observation just in case
@@ -86,4 +87,3 @@ class PolicyEvalQL():
         
         self.train_obs = next_obs
 
-    def 
