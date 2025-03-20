@@ -23,7 +23,13 @@ class PolicyEvalQL():
     """
     def __init__(
         self,
+        q_values = defaultdict(lambda: np.ones(env.action_space.n) * 1.0001),
         env: gym.Env = BitEnv(),
+        learning_rate: float = 0.01,
+        initial_epsilon: float = 0.1,
+        epsilon_decay: float = 0,
+        final_epsilon: float = 0.1,
+        discount_factor: float = 0.99,
     ):
         """
         Initialises the default training agent and environment
@@ -44,20 +50,17 @@ class PolicyEvalQL():
 
         self.ql_agent = QLAgent(
             env,
-            learning_rate=0.01,
-            initial_epsilon=0.1,
-            epsilon_decay=0,
-            final_epsilon=0.1,
-            discount_factor=0.99,
+            learning_rate=learning_rate,
+            initial_epsilon=initial_epsilon,
+            epsilon_decay=epsilon_decay,
+            final_epsilon=final_epsilon,
+            discount_factor=discount_factor,
         )
 
-        self.ql_agent.q_values = defaultdict(
-            lambda: np.ones(env.action_space.n) * 1.0001
-        )
+        self.ql_agent.q_values = q_values
 
         # Initialise initial training-agent observation just in case
         self.train_obs, _ = env.reset()
-
     
     def train_steps(
         self,
@@ -82,3 +85,5 @@ class PolicyEvalQL():
             obs = next_obs
         
         self.train_obs = next_obs
+
+    def 
