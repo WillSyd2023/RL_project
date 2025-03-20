@@ -40,6 +40,8 @@ class PolicyEvalQL():
         Arg:
             env: can insert environment here; default as just mentioned
         """
+        self.env = env
+
         self.ql_agent = QLAgent(
             env,
             learning_rate=0.01,
@@ -69,4 +71,14 @@ class PolicyEvalQL():
         Arg:
             steps: number of steps to play; default is 5_000
         """
-        # for _ in range(steps):
+        obs = self.train_obs
+        agent = self.ql_agent
+
+        for _ in range(steps):
+            action = agent.get_action(obs)
+            next_obs, reward, terminated, _, _ = self.env.step(action)
+
+            agent.update(obs, action, reward, terminated, next_obs)
+            obs = next_obs
+        
+        self.train_obs = next_obs
