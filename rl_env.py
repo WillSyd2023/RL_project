@@ -74,7 +74,7 @@ class BitEnv(gym.Env):
         self._obs = 0
 
     def __deepcopy__(self, memo):
-        newone = type(self)(copy.deepcopy(self._p, memo))
+        newone = type(self)(self._p)
         return newone
 
     def _sample_obs(self):
