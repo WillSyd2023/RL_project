@@ -87,3 +87,5 @@ class PolicyEvalQL():
         
         self.train_obs = next_obs
 
+    def avg_reward_per_eps(self):
+        return
