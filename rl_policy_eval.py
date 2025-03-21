@@ -96,7 +96,7 @@ class PolicyEvalQL():
     def avg_reward_per_eps(
         self,
         q_values,
-        time_limit: int = 100_000,
+        time_limit: int = 1000,
         n_eps: int = 50,
     ):
         """
@@ -141,3 +141,15 @@ class PolicyEvalQL():
                 obs = next_obs
 
         return total_reward/(time_limit * n_eps)
+
+    def one_trial(
+        self,
+        steps_measure,
+        num_measure,
+        time_limit,
+        n_eps,
+    ):
+        """
+        Perform a single independent trial
+        """
+        return
