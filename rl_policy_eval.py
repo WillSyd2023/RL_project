@@ -123,4 +123,21 @@ class PolicyEvalQL():
         )
         test_agent.q_values = q_values
 
-        return
+        # Record cumulative reward for every single step
+        # (n_eps * time_limit)
+        total_reward = 0
+        for _ in tqdm(range(n_eps)):
+            obs, _ = env.reset()
+            done = False
+
+            # Play one episode
+            while not done:
+                action = test_agent.get_action(obs)
+                next_obs, reward, terminated, truncated, _ = env.step(action)
+
+                total_reward += reward
+
+                done = terminated or truncated
+                obs = next_obs
+
+        return total_reward/(time_limit * n_eps)
