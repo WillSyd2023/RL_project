@@ -2,6 +2,7 @@
 
 from abc import ABCMeta, abstractmethod
 from collections import defaultdict
+import copy
 import numpy as np
 import gymnasium as gym
 
@@ -76,6 +77,18 @@ class QLAgent(Agent):
         self.epsilon = initial_epsilon
         self.epsilon_decay = epsilon_decay
         self.final_epsilon = final_epsilon
+
+    def __deepcopy__(self, memo):
+        newone = type(self)(
+            env=copy.deepcopy(self.env),
+            learning_rate=self.lr,
+            initial_epsilon=self.epsilon,
+            epsilon_decay=self.epsilon_decay,
+            final_epsilon=self.final_epsilon,
+            discount_factor=self.discount_factor,
+        )
+        newone.q_values = copy.deepcopy(self.q_values)
+        return newone
 
     def get_action(self, obs: int) -> int:
         """
