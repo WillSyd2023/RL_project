@@ -51,9 +51,9 @@ class PolicyEvalQL():
             the other parameters set up the initial training agent
         """
         self.original_env = env
-        self.training_env = copy.deepcopy(self.original_env)
+        self.training_env = None
 
-        self.ql_agent = QLAgent(
+        self.ori_agent = QLAgent(
             env,
             learning_rate=learning_rate,
             initial_epsilon=initial_epsilon,
@@ -64,7 +64,9 @@ class PolicyEvalQL():
 
         if q_values is None:
             q_values = defaultdict(lambda: np.ones(env.action_space.n) * 1.0001)
-        self.ql_agent.q_values = q_values
+        self.ori_agent.q_values = q_values
+
+        self.train_agent = None
 
         # Initialise initial training-agent observation just in case
         self.train_obs, _ = env.reset()
@@ -82,7 +84,7 @@ class PolicyEvalQL():
             steps: number of steps to play; default is 5_000
         """
         obs = self.train_obs
-        agent = self.ql_agent
+        agent = self.train_agent
 
         for _ in range(steps):
             action = agent.get_action(obs)
