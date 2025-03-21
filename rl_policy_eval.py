@@ -107,6 +107,8 @@ class PolicyEvalQL():
             q_values: to be tested
             time_limit: for a single episode
             n_eps: number of episodes to play
+
+        Returns average reward
         """
         # Copy environment from original and set time limit
         env = copy.deepcopy(self.original_env)
@@ -151,5 +153,11 @@ class PolicyEvalQL():
     ):
         """
         Perform a single independent trial
+
+        Args:
+            steps_measure: number of steps to take before measuring q-values
+            num_measure: number of times we measure q-values
+            time_limit: of a single episode (when testing q-values)
+            n_eps: number of episodes (for testing q_values)
         """
         return
