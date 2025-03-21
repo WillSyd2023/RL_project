@@ -148,10 +148,10 @@ class PolicyEvalQL():
 
     def one_trial(
         self,
-        steps_measure,
-        num_measure,
-        time_limit,
-        n_eps,
+        steps_measure: int = 5_000,
+        num_measure: int = 50,
+        time_limit: int = 1000,
+        n_eps: int = 50,
     ):
         """
         Perform a single independent trial
@@ -162,4 +162,21 @@ class PolicyEvalQL():
             time_limit: of a single episode (when testing q-values)
             n_eps: number of episodes (for testing q_values)
         """
-        return
+        # Initialise training agent and training environment
+        self.train_agent = copy.deepcopy(self.ori_agent)
+        self.training_env = self.train_agent.env
+
+        # Train agent and run tests
+        # Record results on a list
+        averages = []
+        for _ in range(num_measure):
+            self.train_steps(steps_measure)
+            averages.append(
+                self.avg_reward_per_eps(
+                    copy.deepcopy(self.train_agent.q_values),
+                    time_limit,
+                    n_eps,
+                )
+            )
+
+        return averages
