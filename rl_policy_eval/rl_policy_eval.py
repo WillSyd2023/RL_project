@@ -175,7 +175,7 @@ class PolicyEvalQL():
         # Train agent and run tests
         # Record results on a list
         averages = np.empty(0)
-        for _ in range(num_measure):
+        for _ in tqdm(range(num_measure)):
             self.train_steps(steps_measure)
             averages = np.append(
                 averages,
@@ -214,7 +214,7 @@ class PolicyEvalQL():
         # Get medians and corresponding steps
         steps = np.zeros(num_measure)
         trials = np.empty((num_measure, 0))
-        for i in range(num_trials):
+        for i in tqdm(range(num_trials)):
             steps[i] = (i + 1) * steps_measure
             trials = np.column_stack((
                 trials,

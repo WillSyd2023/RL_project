@@ -169,9 +169,3 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-
-.gitignore
-
-# Extra
-/demo
-/demo_2
