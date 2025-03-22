@@ -202,5 +202,25 @@ class PolicyEvalQL():
             num_measure: number of times we measure q-values
             time_limit: of a single episode (when testing q-values)
             n_eps: number of episodes (for testing q_values)
+        
+        Returns:
+            number of steps taken before measuring
+            corresponding medians
         """
-        return
+        # Get medians and corresponding steps
+        trials = np.empty((num_measure, 0))
+        steps = np.empty((num_measure, 0))
+        for i in range(1, num_trials + 1):
+            trials = np.column_stack((
+                trials,
+                self.one_trial(
+                    steps_measure=steps_measure,
+                    num_measure=num_measure,
+                    time_limit=time_limit,
+                    n_eps=n_eps,
+                ),
+            ))
+            steps = np.append(steps, i * steps_measure)
+        medians = np.median(trials, axis=1)
+
+        return steps, medians
