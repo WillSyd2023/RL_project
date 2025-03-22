@@ -98,7 +98,7 @@ class PolicyEvalQL():
     def avg_reward_per_eps(
         self,
         q_values,
-        time_limit: int = 1000,
+        time_limit: int = 1_000,
         n_eps: int = 50,
     ):
         """
@@ -150,7 +150,7 @@ class PolicyEvalQL():
         self,
         steps_measure: int = 5_000,
         num_measure: int = 50,
-        time_limit: int = 1000,
+        time_limit: int = 1_000,
         n_eps: int = 50,
     ):
         """
@@ -184,11 +184,23 @@ class PolicyEvalQL():
 
         return averages
 
-    def trials(self):
+    def trials(
+        self,
+        num_trials: int = 10,
+        steps_measure: int = 5_000,
+        num_measure: int = 50,
+        time_limit: int = 1_000,
+        n_eps: int = 50,
+    ):
         """
         Perform independent trials and return medians of averages from each
         measuring time
 
         Args:
+            num_trials: number of independent trials
+            steps_measure: number of steps to take before measuring q-values
+            num_measure: number of times we measure q-values
+            time_limit: of a single episode (when testing q-values)
+            n_eps: number of episodes (for testing q_values)
         """
         return
