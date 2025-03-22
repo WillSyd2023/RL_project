@@ -161,6 +161,8 @@ class PolicyEvalQL():
             num_measure: number of times we measure q-values
             time_limit: of a single episode (when testing q-values)
             n_eps: number of episodes (for testing q_values)
+
+        Returns 1-d np.array containing averages from each measuring time
         """
         # Initialise training agent and training environment
         self.train_agent = copy.deepcopy(self.ori_agent)
@@ -168,15 +170,25 @@ class PolicyEvalQL():
 
         # Train agent and run tests
         # Record results on a list
-        averages = []
+        averages = np.empty(1)
         for _ in range(num_measure):
             self.train_steps(steps_measure)
-            averages.append(
+            np.append(
+                averages,
                 self.avg_reward_per_eps(
                     copy.deepcopy(self.train_agent.q_values),
                     time_limit,
                     n_eps,
-                )
+                ),
             )
 
         return averages
+
+    def trials(self):
+        """
+        Perform independent trials and return medians of averages from each
+        measuring time
+
+        Args:
+        """
+        return
