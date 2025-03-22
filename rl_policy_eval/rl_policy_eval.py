@@ -1,13 +1,16 @@
 from collections import defaultdict
-from tqdm import tqdm
 import copy
+import sys
+import os
+from tqdm import tqdm
 import numpy as np
 import gymnasium as gym
 from gymnasium.wrappers import TimeLimit
 
 # Self-written code
-from rl_env import BitEnv
-from rl_agent import QLAgent
+sys.path.append(os.path.abspath('..'))
+from rl_env.rl_env import BitEnv
+from rl_agent.rl_agent import QLAgent
 
 class PolicyEvalQL():
     """

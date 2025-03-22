@@ -1,10 +1,15 @@
+import sys
+import os
 import numpy as np
 from scipy.signal import fftconvolve
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 import gymnasium as gym
 from gymnasium.wrappers import RecordEpisodeStatistics, TimeLimit
-from rl_agent import Agent
+
+# Self-written code
+sys.path.append(os.path.abspath('..'))
+from rl_agent.rl_agent import Agent
 
 def train(
         env: gym.Env,

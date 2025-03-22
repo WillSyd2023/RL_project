@@ -2,7 +2,6 @@
 
 from collections.abc import Callable
 from typing import Optional
-import copy
 import numpy as np
 from scipy.optimize import minimize
 import gymnasium as gym

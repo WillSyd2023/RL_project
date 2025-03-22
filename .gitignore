@@ -171,3 +171,7 @@ cython_debug/
 .pypirc
 
 .gitignore
+
+# Extra
+/demo
+/demo_2
