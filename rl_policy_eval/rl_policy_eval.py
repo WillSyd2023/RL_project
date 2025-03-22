@@ -131,7 +131,7 @@ class PolicyEvalQL():
         # Record cumulative reward for every single step
         # (n_eps * time_limit)
         total_reward = 0
-        for _ in tqdm(range(n_eps)):
+        for _ in range(n_eps):
             obs, _ = env.reset()
             done = False
 
@@ -145,7 +145,7 @@ class PolicyEvalQL():
                 done = terminated or truncated
                 obs = next_obs
 
-        return total_reward/(time_limit * n_eps)
+        return total_reward/n_eps
 
     def one_trial(
         self,
@@ -173,7 +173,7 @@ class PolicyEvalQL():
         # Train agent and run tests
         # Record results on a list
         averages = np.empty(0)
-        for _ in tqdm(range(num_measure)):
+        for _ in range(num_measure):
             self.train_steps(steps_measure)
             averages = np.append(
                 averages,
@@ -214,23 +214,27 @@ class PolicyEvalQL():
         # Get medians and corresponding steps
         steps = np.zeros(num_measure)
         trials = np.empty((num_measure, 0))
-        for i in tqdm(range(num_trials)):
-            steps[i] = (i + 1) * steps_measure
+        for _ in tqdm(range(num_trials)):
+            one_trial = self.one_trial(
+                steps_measure=steps_measure,
+                num_measure=num_measure,
+                time_limit=time_limit,
+                n_eps=n_eps,
+            )
             trials = np.column_stack((
                 trials,
-                self.one_trial(
-                    steps_measure=steps_measure,
-                    num_measure=num_measure,
-                    time_limit=time_limit,
-                    n_eps=n_eps,
-                ),
+                one_trial,
             ))
         medians = np.median(trials, axis=1)
 
-        self.steps = steps
+        self.steps = np.arange(
+            start=1,
+            stop=1 + num_measure,
+            step=1,
+        ) * steps_measure
         self.medians = medians
         self.max_reward = time_limit
-        self.num_trials = trials
+        self.num_trials = num_trials
 
     def visualise(self, save: str = ""):
         fig, ax = plt.subplots()
