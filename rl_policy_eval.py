@@ -164,9 +164,10 @@ class PolicyEvalQL():
 
         Returns 1-d np.array containing averages from each measuring time
         """
-        # Initialise training agent and training environment
+        # Initialise training agent/environment/observation
         self.train_agent = copy.deepcopy(self.ori_agent)
         self.training_env = self.train_agent.env
+        self.train_obs, _ = self.training_env.reset()
 
         # Train agent and run tests
         # Record results on a list
@@ -208,9 +209,10 @@ class PolicyEvalQL():
             corresponding medians
         """
         # Get medians and corresponding steps
+        steps = np.zeros(num_measure)
         trials = np.empty((num_measure, 0))
-        steps = np.empty((num_measure, 0))
-        for i in range(1, num_trials + 1):
+        for i in range(num_trials):
+            steps[i] = (i + 1) * steps_measure
             trials = np.column_stack((
                 trials,
                 self.one_trial(
@@ -220,7 +222,6 @@ class PolicyEvalQL():
                     n_eps=n_eps,
                 ),
             ))
-            steps = np.append(steps, i * steps_measure)
         medians = np.median(trials, axis=1)
 
         return steps, medians
