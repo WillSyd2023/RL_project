@@ -195,7 +195,7 @@ class PolicyEvalQL():
         n_eps: int = 50,
     ):
         """
-        Perform independent trials and return medians of averages from each
+        Perform independent trials and calculate medians of averages from each
         measuring time
 
         Args:
