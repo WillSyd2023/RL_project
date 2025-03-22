@@ -3,6 +3,7 @@ import copy
 import sys
 import os
 from tqdm import tqdm
+import matplotlib.pyplot as plt
 import numpy as np
 import gymnasium as gym
 from gymnasium.wrappers import TimeLimit
@@ -54,7 +55,6 @@ class PolicyEvalQL():
             the other parameters set up the initial training agent
         """
         self.original_env = env
-        self.training_env = None
 
         self.ori_agent = QLAgent(
             env,
@@ -68,8 +68,6 @@ class PolicyEvalQL():
         if q_values is None:
             q_values = defaultdict(lambda: np.ones(env.action_space.n) * 1.0001)
         self.ori_agent.q_values = q_values
-
-        self.train_agent = None
 
         # Initialise initial training-agent observation just in case
         self.train_obs, _ = env.reset()
@@ -207,9 +205,11 @@ class PolicyEvalQL():
             time_limit: of a single episode (when testing q-values)
             n_eps: number of episodes (for testing q_values)
         
-        Returns:
+        Effects - after method, the object stores:
             number of steps taken before measuring
             corresponding medians
+            maximum reward for testing
+            number of trials
         """
         # Get medians and corresponding steps
         steps = np.zeros(num_measure)
@@ -227,4 +227,27 @@ class PolicyEvalQL():
             ))
         medians = np.median(trials, axis=1)
 
-        return steps, medians
+        self.steps = steps
+        self.medians = medians
+        self.max_reward = time_limit
+        self.num_trials = trials
+
+    def visualise(self, save: str = ""):
+        fig, ax = plt.subplots()
+        ax.plot(self.steps, self.medians)
+
+        ax.set(
+            xlabel="Steps taken",
+            ylabel="Median average reward",
+            title="Policy Evaluation: " + str(self.num_trials) + " trials",
+        )
+        ax.axhline(
+            y=self.max_reward,
+            linestyle="--",
+            label="Maximum reward",
+        )
+
+        if save != "":
+            fig.savefig(save + ".png")
+
+        plt.show()
