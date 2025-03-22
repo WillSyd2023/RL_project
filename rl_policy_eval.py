@@ -170,10 +170,10 @@ class PolicyEvalQL():
 
         # Train agent and run tests
         # Record results on a list
-        averages = np.empty(1)
+        averages = np.empty(0)
         for _ in range(num_measure):
             self.train_steps(steps_measure)
-            np.append(
+            averages = np.append(
                 averages,
                 self.avg_reward_per_eps(
                     copy.deepcopy(self.train_agent.q_values),
