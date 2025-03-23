@@ -86,6 +86,9 @@ class BitEnv(gym.Env):
         else:
             self._obs = 0
 
+    def get_obs(self):
+        return self._obs
+
     def _get_info(self):
         return {"p type": self._p_type}
     
@@ -175,4 +178,15 @@ class DualEnv(gym.Env):
 
         Samples observation randomly from one of two given BitEnv's
         """
-        return 
+        # Initialise seed
+        super().reset(seed=seed)
+
+        # Reset the two environments and sample from one of them randomly
+        self._env1.reset()
+        self._env2.reset()
+        if self.np_random.integers(1, high=3) == 1:
+            self._obs = self._env1.get_obs()
+        else:
+            self._obs = self._env2.get_obs()
+
+        return self._obs, self._get_info
