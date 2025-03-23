@@ -167,3 +167,5 @@ class DualEnv(gym.Env):
         )
         return newone
 
+    def _get_info(self):
+        return {"env1": self._env1, "env2": self._env2}
