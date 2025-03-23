@@ -192,6 +192,9 @@ class DualEnv(gym.Env):
 
         return self._obs, self._get_info
 
+    def step(self, action):
+        return
+
     def render(self):
         """Render function
 
