@@ -130,9 +130,21 @@ class BitEnv(gym.Env):
         return
 
 class DualEnv(gym.Env):
-    """Bit environment
+    """Dual environment
+
+    'What if there are two environments, one that always produces 0,
+    another that always produces 1, but we expose the agent to each of these
+    for T steps in some random order'
 
     - Observation is either '0' or '1'
     - Action from agent is either 'guess 0' or 'guess 1'
     - Sample randomly from one of two given BitEnv's
     """
+    def __init__(self, env_1: BitEnv = BitEnv(p=0), env_2: BitEnv = BitEnv(p=1)):
+        """Initialise bit environment.
+
+        Args are the two environments:
+        - env_1: default always produce 0
+        - env_2: default always produce 1
+        """
+        return
