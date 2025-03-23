@@ -131,7 +131,7 @@ class BitEnv(gym.Env):
         return
 
 class DualEnv(gym.Env):
-    """Dual environment
+    """Dual BitEnv environment
 
     'What if there are two environments, one that always produces 0,
     another that always produces 1, but we expose the agent to each of these
@@ -169,3 +169,10 @@ class DualEnv(gym.Env):
 
     def _get_info(self):
         return {"env1": self._env1, "env2": self._env2}
+
+    def reset(self, *, seed: Optional[int] = None, options: Optional[dict] = None):
+        """Reset function
+
+        Samples observation randomly from one of two given BitEnv's
+        """
+        return 
