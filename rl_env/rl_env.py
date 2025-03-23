@@ -10,8 +10,7 @@ class BitEnv(gym.Env):
     """Bit environment
 
     - Observation is either '0' or '1'
-    - Action from agent is array where first element is either '0' or '1' and
-      second element is number of steps taken so far
+    - Action from agent is either 'guess 0' or 'guess 1'
     - Sample from state space with probability 'p' for '1'
     - 'p' can be constant or function with parameter 'n' (current agent step)
     """
@@ -129,3 +128,4 @@ class BitEnv(gym.Env):
         I don't think there is any rendering requirement at the moment
         """
         return
+
