@@ -90,6 +90,7 @@ class BitEnv(gym.Env):
             self._obs = 0
 
     def get_obs(self):
+        """Return currently-stored obs."""
         return self._obs
 
     def reset(self, *, seed: Optional[int] = None, options: Optional[dict] = None):
