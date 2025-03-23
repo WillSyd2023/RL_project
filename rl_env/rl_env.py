@@ -140,11 +140,21 @@ class DualEnv(gym.Env):
     - Action from agent is either 'guess 0' or 'guess 1'
     - Sample randomly from one of two given BitEnv's
     """
-    def __init__(self, env_1: BitEnv = BitEnv(p=0), env_2: BitEnv = BitEnv(p=1)):
+    def __init__(self, env1: BitEnv = BitEnv(p=0), env2: BitEnv = BitEnv(p=1)):
         """Initialise bit environment.
 
         Args are the two environments:
-        - env_1: default always produce 0
-        - env_2: default always produce 1
+        - env1: default always produce 0
+        - env2: default always produce 1
         """
-        return
+        self._env1 = env1
+        self._env2 = env2
+
+        # Action and observation spaces
+        self.action_space = gym.spaces.Discrete(2)
+        self.observation_space = gym.spaces.Discrete(2)
+
+        # Number of steps taken by agent so far
+        self._steps = 0
+
+        self._obs = 0
