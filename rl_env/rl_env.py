@@ -76,6 +76,9 @@ class BitEnv(gym.Env):
         newone = type(self)(self._p)
         return newone
 
+    def _get_info(self):
+        return {"p type": self._p_type}
+
     def _sample_obs(self):
         if callable(self._p):
             p = self._p(self._steps)
@@ -89,9 +92,6 @@ class BitEnv(gym.Env):
     def get_obs(self):
         return self._obs
 
-    def _get_info(self):
-        return {"p type": self._p_type}
-    
     def reset(self, *, seed: Optional[int] = None, options: Optional[dict] = None):
         """Reset function
 
