@@ -129,3 +129,10 @@ class BitEnv(gym.Env):
         """
         return
 
+class DualEnv(gym.Env):
+    """Bit environment
+
+    - Observation is either '0' or '1'
+    - Action from agent is either 'guess 0' or 'guess 1'
+    - Sample randomly from one of two given BitEnv's
+    """
