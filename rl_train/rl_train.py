@@ -1,3 +1,5 @@
+"""Agent-training and visualisation code, taken from Gymnasium document"""
+
 import sys
 import os
 import numpy as np
