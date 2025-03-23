@@ -191,3 +191,10 @@ class DualEnv(gym.Env):
             self._obs = self._env2.get_obs()
 
         return self._obs, self._get_info
+
+    def render(self):
+        """Render function
+
+        I don't think there is any rendering requirement at the moment
+        """
+        return
