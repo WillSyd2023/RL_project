@@ -2,6 +2,7 @@
 
 from collections.abc import Callable
 from typing import Optional
+import copy
 import numpy as np
 from scipy.optimize import minimize
 import gymnasium as gym
@@ -158,3 +159,11 @@ class DualEnv(gym.Env):
         self._steps = 0
 
         self._obs = 0
+
+    def __deepcopy__(self, memo):
+        newone = type(self)(
+            env1=copy.deepcopy(self._env1),
+            env2=copy.deepcopy(self._env2),
+        )
+        return newone
+
