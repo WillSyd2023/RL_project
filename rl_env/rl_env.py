@@ -193,7 +193,17 @@ class DualEnv(gym.Env):
         return self._obs, self._get_info
 
     def step(self, action):
-        return
+        # Update current number of steps
+        self._steps += 1
+
+        # Sample from one of the environments randomly
+        if self.np_random.integers(1, high=3) == 1:
+            obs, reward, terminated, truncated, _ = self._env1.step(action)
+        else:
+            obs, reward, terminated, truncated, _ = self._env2.step(action)
+
+        self._obs = obs
+        return obs, reward, terminated, truncated, self._get_info()
 
     def render(self):
         """Render function
