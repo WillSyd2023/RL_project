@@ -12,8 +12,59 @@ from gymnasium.wrappers import TimeLimit
 
 # Self-written code
 sys.path.append(os.path.abspath('..'))
-from rl_env.rl_env import BitEnv
+from rl_env.rl_env import BitEnv, DualEnv
 from rl_agent.rl_agent import QLAgent
+
+def avg_reward_bitenv(
+    env: gym.Env,
+    q_values,
+    time_limit: int = 1_000,
+    n_eps: int = 50,
+):
+    """
+    Use Q-values greedily on some episodes (with a new agent),
+    get the average reward
+
+    Args:
+        q_values: to be tested
+        time_limit: for a single episode
+        n_eps: number of episodes to play
+
+    Returns average reward
+    """
+    # Copy environment from original and set time limit
+    env = copy.deepcopy(env)
+    env = TimeLimit(env, max_episode_steps=time_limit)
+
+    # Initialise agent for testing
+    test_agent = QLAgent(
+        env,
+        learning_rate = 0,
+        initial_epsilon = 0,
+        epsilon_decay = 0,
+        final_epsilon = 0,
+        discount_factor = 0
+    )
+    test_agent.q_values = q_values
+
+    # Record cumulative reward for every single step
+    # (n_eps * time_limit)
+    total_reward = 0
+    for _ in range(n_eps):
+        obs, _ = env.reset()
+        done = False
+
+        # Play one episode
+        while not done:
+            action = test_agent.get_action(obs)
+            next_obs, reward, terminated, truncated, _ = env.step(action)
+
+            total_reward += reward
+
+            done = terminated or truncated
+            obs = next_obs
+
+    return total_reward/n_eps
 
 class PolicyEvalQL():
     """
@@ -57,6 +108,8 @@ class PolicyEvalQL():
             the other parameters set up the initial training agent
         """
         self.original_env = env
+        if isinstance(env, BitEnv):
+            self.avg_reward_per_eps = avg_reward_bitenv
 
         self.ori_agent = QLAgent(
             env,
@@ -98,57 +151,6 @@ class PolicyEvalQL():
         
         self.train_obs = next_obs
 
-    def avg_reward_per_eps(
-        self,
-        q_values,
-        time_limit: int = 1_000,
-        n_eps: int = 50,
-    ):
-        """
-        Use Q-values greedily on some episodes (with a new agent),
-        get the average reward
-
-        Args:
-            q_values: to be tested
-            time_limit: for a single episode
-            n_eps: number of episodes to play
-
-        Returns average reward
-        """
-        # Copy environment from original and set time limit
-        env = copy.deepcopy(self.original_env)
-        env = TimeLimit(env, max_episode_steps=time_limit)
-
-        # Initialise agent for testing
-        test_agent = QLAgent(
-            env,
-            learning_rate = 0,
-            initial_epsilon = 0,
-            epsilon_decay = 0,
-            final_epsilon = 0,
-            discount_factor = 0
-        )
-        test_agent.q_values = q_values
-
-        # Record cumulative reward for every single step
-        # (n_eps * time_limit)
-        total_reward = 0
-        for _ in range(n_eps):
-            obs, _ = env.reset()
-            done = False
-
-            # Play one episode
-            while not done:
-                action = test_agent.get_action(obs)
-                next_obs, reward, terminated, truncated, _ = env.step(action)
-
-                total_reward += reward
-
-                done = terminated or truncated
-                obs = next_obs
-
-        return total_reward/n_eps
-
     def one_trial(
         self,
         steps_measure: int = 5_000,
@@ -180,6 +182,7 @@ class PolicyEvalQL():
             averages = np.append(
                 averages,
                 self.avg_reward_per_eps(
+                    env=self.original_env,
                     q_values=copy.deepcopy(self.train_agent.q_values),
                     time_limit=time_limit,
                     n_eps=n_eps,
@@ -217,15 +220,14 @@ class PolicyEvalQL():
         steps = np.zeros(num_measure)
         trials = np.empty((num_measure, 0))
         for _ in tqdm(range(num_trials)):
-            one_trial = self.one_trial(
+            trials = np.column_stack((
+                trials,
+                self.one_trial(
                 steps_measure=steps_measure,
                 num_measure=num_measure,
                 time_limit=time_limit,
                 n_eps=n_eps,
-            )
-            trials = np.column_stack((
-                trials,
-                one_trial,
+                ),
             ))
         medians = np.median(trials, axis=1)
 
