@@ -180,9 +180,9 @@ class PolicyEvalQL():
             averages = np.append(
                 averages,
                 self.avg_reward_per_eps(
-                    copy.deepcopy(self.train_agent.q_values),
-                    time_limit,
-                    n_eps,
+                    q_values=copy.deepcopy(self.train_agent.q_values),
+                    time_limit=time_limit,
+                    n_eps=n_eps,
                 ),
             )
 

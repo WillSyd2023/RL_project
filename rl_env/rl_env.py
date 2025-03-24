@@ -152,8 +152,8 @@ class DualEnv(gym.Env):
         - env1: default always produce 0
         - env2: default always produce 1
         """
-        self._env1 = env1
-        self._env2 = env2
+        self.env1 = env1
+        self.env2 = env2
 
         # Action and observation spaces
         self.action_space = gym.spaces.Discrete(2)
@@ -166,13 +166,13 @@ class DualEnv(gym.Env):
 
     def __deepcopy__(self, memo):
         newone = type(self)(
-            env1=copy.deepcopy(self._env1),
-            env2=copy.deepcopy(self._env2),
+            env1=copy.deepcopy(self.env1),
+            env2=copy.deepcopy(self.env2),
         )
         return newone
 
     def _get_info(self):
-        return {"env1": self._env1, "env2": self._env2}
+        return {"env1": self.env1, "env2": self.env2}
 
     def reset(self, *, seed: Optional[int] = None, options: Optional[dict] = None):
         """Reset function
@@ -183,12 +183,12 @@ class DualEnv(gym.Env):
         super().reset(seed=seed)
 
         # Reset the two environments and sample from one of them randomly
-        self._env1.reset()
-        self._env2.reset()
+        self.env1.reset()
+        self.env2.reset()
         if self.np_random.integers(1, high=3) == 1:
-            self._obs = self._env1.get_obs()
+            self._obs = self.env1.get_obs()
         else:
-            self._obs = self._env2.get_obs()
+            self._obs = self.env2.get_obs()
 
         return self._obs, self._get_info
 
@@ -198,9 +198,9 @@ class DualEnv(gym.Env):
 
         # Sample from one of the environments randomly
         if self.np_random.integers(1, high=3) == 1:
-            obs, reward, terminated, truncated, _ = self._env1.step(action)
+            obs, reward, terminated, truncated, _ = self.env1.step(action)
         else:
-            obs, reward, terminated, truncated, _ = self._env2.step(action)
+            obs, reward, terminated, truncated, _ = self.env2.step(action)
 
         self._obs = obs
         return obs, reward, terminated, truncated, self._get_info()
