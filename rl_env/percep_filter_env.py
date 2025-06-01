@@ -11,8 +11,8 @@ class TwoCupEnv(gym.Env):
 
     - Action space is Discrete(3):
         - 0: move left
-        - 1: move right
-        - 2: take cup
+        - 1: taken cup
+        - 2: move right
 
     - Observation space:
         - bot_position: 1D, from 0 to 6 inclusive; initialised as 3
@@ -22,21 +22,27 @@ class TwoCupEnv(gym.Env):
                 - there are 2 possible initial positions
             - presence: binary on whether cup is still there or taken
         - collision_happened:
-            binary on whether previous action caused collision on bot
+            - 0: collide left
+            - 1: no collision
+            - 2: collide right
     """
     def __init__(self):
         # Action space
         self.action_space = Discrete(3)
 
         # Observation space
+        self._lo = 0
+        lo = self._lo
+        self._hi = 6
+        hi = self._hi
         cup = Dict({
-            "position": Box(low=0, high=6, shape=(1,), dtype=np.int8),
+            "position": Box(low=lo, high=hi, shape=(1,), dtype=np.int8),
             "presence": Discrete(2)
         })
         self.observation_space = Dict({
-            "bot_position": Box(low=0, high=6, shape=(1,), dtype=np.int8),
+            "bot_position": Box(low=lo, high=hi, shape=(1,), dtype=np.int8),
             "cups": Tuple((cup, cup)),
-            "collision_happened": Discrete(2)
+            "collision_happened": Discrete(3)
         })
 
         # Initial bot location (always the same)
@@ -72,7 +78,7 @@ class TwoCupEnv(gym.Env):
 
         # Initial collision value (always the same)
         # And collision attribute
-        self._init_collision = 0
+        self._init_collision = 1
         self._collision = self._init_collision
 
     def _get_obs(self):
@@ -97,5 +103,43 @@ class TwoCupEnv(gym.Env):
 
         return self._get_obs()
     
-    # def step(self, action):
+    def step(self, action):
+        self._collision = 1
+
+        reward = 0
+        terminated = False
+        truncated = False
+
+        # If the action is to try to take a cup
+        if action == 1:
+            cups = self._cups
+
+            # If cup is indeed taken, then give reward
+            # (and update cup presence)
+            for cup in cups:
+                if (cup["presence"] == 1 and
+                    np.array_equal(self._bot_loc, cup["position"])):
+                    cup["presence"] = 0
+                    reward = 1
+                    break
+
+            # terminate if all cups are taken
+            if (cups[0]["presence"] == 0 and
+                cups[1]["presence"] == 0):
+                terminated = True
+
+            observation = self._get_obs()
+            return observation, reward, terminated, truncated
         
+        # If the action is to move left/right
+        move = action - 1
+        next_loc = self._bot_loc + move
+
+        # Check for collision
+        if np.all(next_loc < self._lo) or np.all(next_loc > self._hi):
+            self._collision = action
+        else:
+            self._bot_loc += move
+        
+        observation = self._get_obs()
+        return observation, reward, terminated, truncated
