@@ -18,7 +18,7 @@ class Agent(metaclass=ABCMeta):
         self.training_error = []
 
     @abstractmethod
-    def get_action(self, obs: int) -> int:
+    def get_action_core(self, obs: int) -> int:
         """
         Given observation, get action
 
@@ -29,13 +29,13 @@ class Agent(metaclass=ABCMeta):
         """
 
     @abstractmethod
-    def update(
+    def update_core(
         self,
         obs: int,
         action: int,
         reward: int,
         terminated: bool,
-        next_obs: int
+        next_obs: int,
     ):
         """Update agent"""
 

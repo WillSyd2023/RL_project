@@ -1,6 +1,6 @@
 """Q-learning agent with perceptual filter in Gymnasium"""
 
-from typing import Callable, Any
+from typing import Callable
 from copy import deepcopy
 import gymnasium as gym
 
@@ -13,7 +13,7 @@ class PercepFilterQLAgent(QLAgent):
     def __init__(
         self,
         env: gym.Env,
-        obs_filter: Callable[..., Any],
+        obs_filter: Callable[..., str],
         learning_rate: float,
         initial_epsilon: float,
         epsilon_decay: float,
@@ -46,3 +46,29 @@ class PercepFilterQLAgent(QLAgent):
         newone = super().__deepcopy__(memo)
         newone.obs_filter = deepcopy(self.obs_filter, memo)
         return newone
+
+    def get_action(self, obs) -> int:
+        """
+        Returns the best action with probability (1 - epsilon)
+        or a random action with probability epsilon to ensure exploration
+        """
+        # Filter observation first
+        return super().get_action_core(self.obs_filter(obs))
+    
+    def update(
+        self,
+        obs,
+        action: int,
+        reward: int,
+        terminated: bool,
+        next_obs,
+    ):
+        """Updates the Q-value of an action."""
+        # Filter observations first
+        super().update_core(
+            obs=self.obs_filter(obs),
+            action=action,
+            reward=reward,
+            terminated=terminated,
+            next_obs=self.obs_filter(next_obs),
+        )
