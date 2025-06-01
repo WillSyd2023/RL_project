@@ -4,7 +4,7 @@ from typing import Optional
 from copy import deepcopy
 import numpy as np
 import gymnasium as gym
-from gymnasium.spaces import Dict, Box, Discrete
+from gymnasium.spaces import Dict, Box, Discrete, Tuple
 
 class TwoCupEnv(gym.Env):
     """Environment to simulate two-cup problem
@@ -29,16 +29,13 @@ class TwoCupEnv(gym.Env):
         self.action_space = Discrete(3)
 
         # Observation space
+        cup = Dict({
+            "position": Box(low=0, high=6, shape=(1,), dtype=np.int8),
+            "presence": Discrete(2)
+        })
         self.observation_space = Dict({
             "bot_position": Box(low=0, high=6, shape=(1,), dtype=np.int8),
-            "cup1": Dict({
-                "position": Box(low=0, high=6, shape=(1,), dtype=np.int8),
-                "presence": Discrete(2)
-            }),
-            "cup2": Dict({
-                "position": Box(low=0, high=6, shape=(1,), dtype=np.int8),
-                "presence": Discrete(2)
-            }),
+            "cups": Tuple((cup, cup)),
             "collision_happened": Discrete(2)
         })
 
@@ -50,26 +47,26 @@ class TwoCupEnv(gym.Env):
         # Two options for initial cup attributes
         # And cup class attribute
         self._init_cups = {
-            0: {
-                "cup1": {
+            0: (
+                {
                     "position": np.array([0], dtype=np.int8),
                     "presence": 1
                 },
-                "cup2": {
+                {
                     "position": np.array([4], dtype=np.int8),
                     "presence": 1
                 }
-            },
-            1: {
-                "cup1": {
+            ),
+            1: (
+                {
                     "position": np.array([2], dtype=np.int8),
                     "presence": 1
                 },
-                "cup2": {
+                {
                     "position": np.array([6], dtype=np.int8),
                     "presence": 1
                 }
-            }
+            )
         }
         self._cups = deepcopy(self._init_cups[0])
 
@@ -79,12 +76,9 @@ class TwoCupEnv(gym.Env):
         self._collision = self._init_collision
 
     def _get_obs(self):
-        cups = deepcopy(self._cups)
-
         return {
-            "bot_position":  self._bot_loc,
-            "cup1": cups["cup1"],
-            "cup2": cups["cup2"],
+            "bot_position": deepcopy(self._bot_loc),
+            "cups": deepcopy(self._cups),
             "collision_happened": self._collision,
         }
     
@@ -102,3 +96,6 @@ class TwoCupEnv(gym.Env):
         self._collision = self._init_collision
 
         return self._get_obs()
+    
+    # def step(self, action):
+        
