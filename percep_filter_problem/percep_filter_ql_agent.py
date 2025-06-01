@@ -53,7 +53,7 @@ class PercepFilterQLAgent(QLAgent):
         or a random action with probability epsilon to ensure exploration
         """
         # Filter observation first
-        return super().get_action_core(self.obs_filter(obs))
+        return super()._get_action_core(self.obs_filter(obs))
     
     def update(
         self,
@@ -65,7 +65,7 @@ class PercepFilterQLAgent(QLAgent):
     ):
         """Updates the Q-value of an action."""
         # Filter observations first
-        super().update_core(
+        super()._update_core(
             obs=self.obs_filter(obs),
             action=action,
             reward=reward,
