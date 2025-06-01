@@ -76,3 +76,13 @@ class TwoCupEnv(gym.Env):
         # And collision attribute
         self._init_collision = 0
         self._collision = self._init_collision
+
+    def _get_obs(self):
+        cups = deepcopy(self._cups)
+
+        return {
+            "bot_position":  self._bot_loc,
+            "cup1": cups["cup1"],
+            "cup2": cups["cup2"],
+            "collision_happened": self._collision,
+        }
