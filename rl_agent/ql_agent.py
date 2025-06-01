@@ -55,7 +55,7 @@ class QLAgent(Agent):
         newone.q_values = copy.deepcopy(self.q_values)
         return newone
 
-    def get_action_core(self, obs: int) -> int:
+    def _get_action_core(self, obs: int) -> int:
         """
         Returns the best action with probability (1 - epsilon)
         or a random action with probability epsilon to ensure exploration
@@ -67,7 +67,7 @@ class QLAgent(Agent):
         # with probability (1 - epsilon) act greedily (exploit)
         return int(np.argmax(self.q_values[obs]))
 
-    def update_core(
+    def _update_core(
         self,
         obs: int,
         action: int,
