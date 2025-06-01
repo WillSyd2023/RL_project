@@ -1,8 +1,9 @@
 """Non-Markovian environment with perception filter in Gymnasium"""
 
-from gymnasium.spaces import Dict, Box, Discrete
-import gymnasium as gym
+from copy import deepcopy
 import numpy as np
+import gymnasium as gym
+from gymnasium.spaces import Dict, Box, Discrete
 
 class TwoCupEnv(gym.Env):
     """Environment to simulate two-cup problem
@@ -41,9 +42,12 @@ class TwoCupEnv(gym.Env):
         })
 
         # Initial bot location (always the same)
+        # And bot location class attribute
         self._init_bot_loc = np.array([3], dtype=np.int8)
+        self._bot_loc = self._init_bot_loc
 
         # Two options for initial cup attributes
+        # And cup class attribute
         self._init_cups = {
             0: {
                 "cup1": {
@@ -66,6 +70,9 @@ class TwoCupEnv(gym.Env):
                 }
             }
         }
+        self._cups = deepcopy(self._init_cups[0])
 
         # Initial collision value (always the same)
+        # And collision attribute
         self._init_collision = 0
+        self._collision = self._init_collision
