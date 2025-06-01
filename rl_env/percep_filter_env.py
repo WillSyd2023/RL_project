@@ -81,6 +81,10 @@ class TwoCupEnv(gym.Env):
         self._init_collision = 1
         self._collision = self._init_collision
 
+    def __deepcopy__(self, memo):
+        newone = type(self)()
+        return newone
+
     def _get_obs(self):
         return {
             "bot_position": deepcopy(self._bot_loc),
@@ -102,7 +106,7 @@ class TwoCupEnv(gym.Env):
         self._collision = self._init_collision
 
         return self._get_obs()
-    
+
     def step(self, action):
         self._collision = 1
 
