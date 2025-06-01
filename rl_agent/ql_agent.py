@@ -5,7 +5,7 @@ import copy
 import numpy as np
 import gymnasium as gym
 
-from parent_agent import Agent
+from rl_agent.parent_agent import Agent
 
 class QLAgent(Agent):
     """

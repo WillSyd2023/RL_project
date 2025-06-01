@@ -42,4 +42,7 @@ class PercepFilterQLAgent(QLAgent):
 
         self.obs_filter = obs_filter
     
-    
+    def __deepcopy__(self, memo):
+        newone = super().__deepcopy__(memo)
+        newone.obs_filter = deepcopy(self.obs_filter, memo)
+        return newone
