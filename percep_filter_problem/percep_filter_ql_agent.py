@@ -1,0 +1,45 @@
+"""Q-learning agent with perceptual filter in Gymnasium"""
+
+from typing import Callable, Any
+from copy import deepcopy
+import gymnasium as gym
+
+from rl_agent.ql_agent import QLAgent
+
+class PercepFilterQLAgent(QLAgent):
+    """
+    Q-learning agent with perceptual filter
+    """
+    def __init__(
+        self,
+        env: gym.Env,
+        obs_filter: Callable[..., Any],
+        learning_rate: float,
+        initial_epsilon: float,
+        epsilon_decay: float,
+        final_epsilon: float,
+        discount_factor: float = 0.95,
+    ):
+        """Initialise Q-learning agent with perceptual filter
+
+        Args:
+            env: The training environment
+            obs_filter: perceptual filter of agent
+            learning_rate: The learning rate
+            initial_epsilon: The initial epsilon value
+            epsilon_decay: The decay for epsilon
+            final_epsilon: The final epsilon value
+            discount_factor: The discount factor for computing the Q-value
+        """
+        super().__init__(
+            env,
+            learning_rate,
+            initial_epsilon,
+            epsilon_decay,
+            final_epsilon,
+            discount_factor,
+        )
+
+        self.obs_filter = obs_filter
+    
+    
