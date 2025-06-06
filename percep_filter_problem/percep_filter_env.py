@@ -91,7 +91,7 @@ class TwoCupEnv(gym.Env):
             "cups": deepcopy(self._cups),
             "collision_happened": self._collision,
         }
-    
+        
     def reset(self, *, seed: Optional[int] = None, options: Optional[dict] = None):
         super().reset(seed=seed)
 
