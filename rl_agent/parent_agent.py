@@ -7,6 +7,7 @@ class Agent(metaclass=ABCMeta):
     """
     Abstract template for an agent class
     """
+    @abstractmethod
     def __init__(self, env: gym.Env):
         """
         Initialise agent
