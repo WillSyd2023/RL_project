@@ -56,7 +56,7 @@ class PercepFilterQLAgent(QLAgent):
         or a random action with probability epsilon to ensure exploration
 
         Args:
-            obs: observation
+            obs: observation; must be consistent in type with obs_filter input
         
         Returns action, which will be integer
         """
@@ -74,11 +74,11 @@ class PercepFilterQLAgent(QLAgent):
         """Updates the Q-value of an action.
         
         Args:
-            obs: observation
+            obs: observation; must be consistent in type with obs_filter input
             action: must be integer
             reward: must be integer
             terminated: must be boolean
-            next_obs: next observation
+            next_obs: next observation; same typing as obs
         """
         # Filter observations first
         super()._update_core(
