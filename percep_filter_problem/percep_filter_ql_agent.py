@@ -15,8 +15,8 @@ class PercepFilterQLAgent(QLAgent):
     """
     def __init__(
         self,
-        env: gym.Env = TwoCupEnv(),
         obs_filter: Callable[..., str] = filter_four_bits,
+        env: gym.Env = TwoCupEnv(),
         learning_rate: float = 0.01,
         initial_epsilon: float = 0.1,
         epsilon_decay: float = 0,
@@ -46,8 +46,15 @@ class PercepFilterQLAgent(QLAgent):
         self.obs_filter = obs_filter
     
     def __deepcopy__(self, memo):
-        newone = super().__deepcopy__(memo)
-        newone.obs_filter = deepcopy(self.obs_filter, memo)
+        newone = type(self)(
+            obs_filter=self.obs_filter,
+            env=deepcopy(self.env),
+            learning_rate=self.lr,
+            initial_epsilon=self.epsilon,
+            epsilon_decay=self.epsilon_decay,
+            final_epsilon=self.final_epsilon,
+            discount_factor=self.discount_factor,
+        )
         return newone
 
     def get_action(self, obs):

@@ -1,6 +1,7 @@
 """Perceptual filters for PercepFilterQLAgent"""
 
 from typing import Dict, Tuple, Union
+from copy import deepcopy
 import numpy as np
 
 def filter_four_bits(
@@ -45,3 +46,25 @@ def filter_four_bits(
         bits += "01"
 
     return bits
+
+def filter_complete(
+    obs:
+        Dict[str,
+            Union[
+                np.ndarray,
+                Tuple[
+                    Dict[str, Union[np.ndarray, int]],
+                    Dict[str, Union[np.ndarray, int]],
+                ],
+                int,
+            ],
+        ]
+    ) -> str:
+    state = ""
+    state += str(obs["bot_position"][0]) + ","
+    for cup in obs["cups"]:
+        state += str(cup["position"][0]) + ","
+        state += str(cup["presence"]) + ","
+    state += str(obs["collision_happened"])
+    
+    return state
