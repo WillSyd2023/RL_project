@@ -14,14 +14,15 @@ class QLAgent(Agent):
     Mostly taken from https://gymnasium.farama.org/introduction/train_agent/
     in 16-17 January 2025
     """
+
     def __init__(
         self,
         env: gym.Env,
-        learning_rate: float,
-        initial_epsilon: float,
-        epsilon_decay: float,
-        final_epsilon: float,
-        discount_factor: float = 0.95,
+        learning_rate: float = 0.01,
+        initial_epsilon: float = 0.1,
+        epsilon_decay: float = 0,
+        final_epsilon: float = 0.1,
+        discount_factor: float = 0.99,
     ):
         """Initialise Q-learning RL agent
 
