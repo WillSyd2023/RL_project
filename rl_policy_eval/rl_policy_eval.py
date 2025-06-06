@@ -57,14 +57,12 @@ class PolicyEvalQL():
             raise ValueError("Need to define agent's environment (inside agent)")
         self.original_env = env
 
-        self.ori_agent = type(agent)(
-            env,
-            learning_rate=learning_rate,
-            initial_epsilon=initial_epsilon,
-            epsilon_decay=epsilon_decay,
-            final_epsilon=final_epsilon,
-            discount_factor=discount_factor,
-        )
+        self.ori_agent = agent
+        self.ori_agent.learning_rate = learning_rate
+        self.ori_agent.initial_epsilon = initial_epsilon
+        self.ori_agent.epsilon_decay = epsilon_decay
+        self.ori_agent.final_epsilon = final_epsilon
+        self.ori_agent.discount_factor = discount_factor
 
         if q_values is None:
             q_values = defaultdict(lambda: np.ones(env.action_space.n) * 1.0001)
@@ -129,14 +127,14 @@ class PolicyEvalQL():
         env = TimeLimit(env, max_episode_steps=time_limit)
 
         # Initialise agent for testing
-        test_agent = type(self.ori_agent)(
-            env,
-            learning_rate = 0,
-            initial_epsilon = 0,
-            epsilon_decay = 0,
-            final_epsilon = 0,
-            discount_factor = 0,
-        )
+        test_agent = deepcopy(self.ori_agent)
+        test_agent.env = env
+        test_agent.learning_rate = 0
+        test_agent.initial_epsilon = 0
+        test_agent.epsilon_decay = 0
+        test_agent.final_epsilon = 0
+        test_agent.discount_factor = 0
+
         test_agent.q_values = deepcopy(self.train_agent.q_values)
 
         # Record cumulative reward for every single step
@@ -152,7 +150,6 @@ class PolicyEvalQL():
                 next_obs, reward, terminated, truncated, _ = env.step(action)
 
                 total_reward += reward
-
                 done = terminated or truncated
                 obs = next_obs
 
