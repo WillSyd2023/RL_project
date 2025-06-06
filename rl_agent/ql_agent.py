@@ -55,11 +55,7 @@ class QLAgent(Agent):
         newone.q_values = copy.deepcopy(self.q_values)
         return newone
 
-    def _get_action_core(self, obs: int) -> int:
-        """
-        Returns the best action with probability (1 - epsilon)
-        or a random action with probability epsilon to ensure exploration
-        """
+    def _get_action_core(self, obs: str) -> int:
         # with probability epsilon return a random action to explore the environment
         if np.random.random() < self.epsilon:
             return self.env.action_space.sample()
@@ -67,15 +63,26 @@ class QLAgent(Agent):
         # with probability (1 - epsilon) act greedily (exploit)
         return int(np.argmax(self.q_values[obs]))
 
+    def get_action(self, obs):
+        """
+        Returns the best action with probability (1 - epsilon)
+        or a random action with probability epsilon to ensure exploration
+
+        Args:
+            obs; must be string
+        
+        Returns action, which will be integer
+        """
+        return self._get_action_core(obs)
+
     def _update_core(
         self,
-        obs: int,
+        obs: str,
         action: int,
         reward: int,
         terminated: bool,
-        next_obs: int,
+        next_obs: str,
     ):
-        """Updates the Q-value of an action."""
         future_q_value = (not terminated) * np.max(self.q_values[next_obs])
         temporal_difference = (
             reward + self.discount_factor * future_q_value - self.q_values[obs][action]
@@ -86,6 +93,25 @@ class QLAgent(Agent):
         )
         self.training_error.append(temporal_difference)
     
+    def update(
+        self,
+        obs,
+        action,
+        reward,
+        terminated,
+        next_obs,
+    ):
+        """Updates the Q-value of an action.
+        
+        Args:
+            obs: observation, must be string
+            action: must be integer
+            reward: must be integer
+            terminated: must be boolean
+            next_obs: next observation, must be string
+        """
+        self._update_core(obs, action, reward, terminated, next_obs)
+
     def decay_epsilon(self):
         """Epsilon decay method"""
         self.epsilon = max(self.final_epsilon, self.epsilon - self.epsilon_decay)

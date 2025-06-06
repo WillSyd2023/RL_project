@@ -50,10 +50,15 @@ class PercepFilterQLAgent(QLAgent):
         newone.obs_filter = deepcopy(self.obs_filter, memo)
         return newone
 
-    def get_action(self, obs) -> int:
+    def get_action(self, obs):
         """
         Returns the best action with probability (1 - epsilon)
         or a random action with probability epsilon to ensure exploration
+
+        Args:
+            obs: observation
+        
+        Returns action, which will be integer
         """
         # Filter observation first
         return super()._get_action_core(self.obs_filter(obs))
@@ -61,12 +66,20 @@ class PercepFilterQLAgent(QLAgent):
     def update(
         self,
         obs,
-        action: int,
-        reward: int,
-        terminated: bool,
+        action,
+        reward,
+        terminated,
         next_obs,
     ):
-        """Updates the Q-value of an action."""
+        """Updates the Q-value of an action.
+        
+        Args:
+            obs: observation
+            action: must be integer
+            reward: must be integer
+            terminated: must be boolean
+            next_obs: next observation
+        """
         # Filter observations first
         super()._update_core(
             obs=self.obs_filter(obs),
