@@ -105,7 +105,7 @@ class TwoCupEnv(gym.Env):
         # Set collision attribute
         self._collision = self._init_collision
 
-        return self._get_obs()
+        return self._get_obs(), None
 
     def step(self, action):
         self._collision = 1
@@ -133,7 +133,7 @@ class TwoCupEnv(gym.Env):
                 terminated = True
 
             observation = self._get_obs()
-            return observation, reward, terminated, truncated
+            return observation, reward, terminated, truncated, None
         
         # If the action is to move left/right
         move = action - 1
@@ -146,4 +146,4 @@ class TwoCupEnv(gym.Env):
             self._bot_loc += move
         
         observation = self._get_obs()
-        return observation, reward, terminated, truncated
+        return observation, reward, terminated, truncated, None

@@ -15,7 +15,7 @@ class PercepFilterQLAgent(QLAgent):
     """
     def __init__(
         self,
-        env: gym.Env = TwoCupEnv,
+        env: gym.Env = TwoCupEnv(),
         obs_filter: Callable[..., str] = filter_four_bits,
         learning_rate: float = 0.01,
         initial_epsilon: float = 0.1,
