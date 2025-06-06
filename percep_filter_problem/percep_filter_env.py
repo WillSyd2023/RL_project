@@ -110,7 +110,7 @@ class TwoCupEnv(gym.Env):
     def step(self, action):
         self._collision = 1
 
-        reward = 0
+        reward = -1
         terminated = False
         truncated = False
 

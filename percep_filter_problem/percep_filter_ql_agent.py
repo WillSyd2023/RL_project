@@ -6,18 +6,21 @@ import gymnasium as gym
 
 from rl_agent.ql_agent import QLAgent
 
+from percep_filter_problem.percep_filter import filter_four_bits
+from percep_filter_problem.percep_filter_env import TwoCupEnv
+
 class PercepFilterQLAgent(QLAgent):
     """
     Q-learning agent with perceptual filter
     """
     def __init__(
         self,
-        env: gym.Env,
-        obs_filter: Callable[..., str],
-        learning_rate: float,
-        initial_epsilon: float,
-        epsilon_decay: float,
-        final_epsilon: float,
+        env: gym.Env = TwoCupEnv,
+        obs_filter: Callable[..., str] = filter_four_bits,
+        learning_rate: float = 0.01,
+        initial_epsilon: float = 0.1,
+        epsilon_decay: float = 0,
+        final_epsilon: float = 0.1,
         discount_factor: float = 0.95,
     ):
         """Initialise Q-learning agent with perceptual filter
