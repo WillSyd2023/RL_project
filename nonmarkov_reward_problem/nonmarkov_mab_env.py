@@ -60,6 +60,9 @@ class NonMarkovMABEnv(gym.Env):
         terminated = False
         truncated = False
 
+        # Update trace
+        self.trace.add_node(pi={str(action)})
+
         # Figure out reward
         reward = 0
         if self.rewards is not None:
