@@ -221,7 +221,7 @@ class PolicyEvalQL():
         # Get medians and corresponding steps
         trials = np.empty((num_measure, 0))
         # May put tqdm here
-        for _ in range(num_trials):
+        for _ in tqdm(range(num_trials)):
             trials = np.column_stack((
                 trials,
                 self.one_trial(
@@ -242,7 +242,7 @@ class PolicyEvalQL():
         self.max_reward = time_limit
         self.num_trials = num_trials
 
-    def visualise(self, save: str = ""):
+    def visualise(self, save: str = "", title: str ="Policy Evaluation: "):
         """Visualise outcome after trials
 
         Only arg is save - "" if not saving any picture (default);
@@ -254,7 +254,7 @@ class PolicyEvalQL():
         ax.set(
             xlabel="Steps taken",
             ylabel="Median average reward",
-            title="Policy Evaluation: " + str(self.num_trials) + " trials",
+            title=title + str(self.num_trials) + " trials",
         )
         ax.axhline(
             y=self.max_reward,
