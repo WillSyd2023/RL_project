@@ -147,3 +147,10 @@ class TwoCupEnv(gym.Env):
         
         observation = self._get_obs()
         return observation, reward, terminated, truncated, None
+
+    def render(self):
+        """Render function
+
+        I don't think there is any rendering requirement at the moment
+        """
+        return

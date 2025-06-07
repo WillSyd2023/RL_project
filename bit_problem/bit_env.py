@@ -126,3 +126,10 @@ class BitEnv(gym.Env):
         truncated = False
 
         return self._obs, reward, terminated, truncated, self._get_info()
+
+    def render(self):
+        """Render function
+
+        I don't think there is any rendering requirement at the moment
+        """
+        return
