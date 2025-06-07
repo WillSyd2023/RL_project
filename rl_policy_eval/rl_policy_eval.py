@@ -242,7 +242,7 @@ class PolicyEvalQL():
         self.max_reward = time_limit
         self.num_trials = num_trials
 
-    def visualise(self, save: str = "", title: str ="Policy Evaluation: "):
+    def visualise(self, save: str = "", title: str ="Policy Evaluation"):
         """Visualise outcome after trials
 
         Only arg is save - "" if not saving any picture (default);
@@ -254,7 +254,7 @@ class PolicyEvalQL():
         ax.set(
             xlabel="Steps taken",
             ylabel="Median average reward",
-            title=title + str(self.num_trials) + " trials",
+            title=title + ": " + str(self.num_trials) + " trials",
         )
         ax.axhline(
             y=self.max_reward,
