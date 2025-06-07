@@ -8,8 +8,9 @@ def m_reward_1(trace: TraceList) -> int:
         return 0
 
     node = trace.head
+    
     if "3" in node.pi:
-        return 1
+        return 10
     else:
         return 0
 
@@ -19,6 +20,7 @@ def m_reward_4(trace: TraceList) -> int:
         return 0
 
     node = trace.head
+    
     if "2" in node.pi:
         return 1
     else:
@@ -30,9 +32,10 @@ def nm_reward_1(trace: TraceList) -> int:
         return 0
 
     latest_actions = ["3", "1", "1", "1", "1"]
-    reward = 1
+    reward = 10
     node = trace.head
     for action in latest_actions:
+        
         if action in node.pi:
             node = node.next
         else:
@@ -50,6 +53,7 @@ def nm_reward_4(trace: TraceList) -> int:
     reward = 1
     node = trace.head
     for action in latest_actions:
+        
         if action in node.pi:
             node = node.next
         else:
