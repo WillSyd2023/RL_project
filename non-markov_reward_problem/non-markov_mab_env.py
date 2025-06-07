@@ -3,9 +3,11 @@
 Also, implementation of trace via linked list
 """
 
+from typing import Set
+
 class TraceNode:
     """Node of trace linked list"""
-    def __init__(self, node_id: int, pi: set = None):
+    def __init__(self, node_id: int, pi: Set[str] = None):
         self.node_id = node_id
         if pi is None:
             pi = set()
@@ -19,7 +21,7 @@ class TraceList:
         self.next_id = 0
         self.head = None
     
-    def add_node(self, pi: set = None):
+    def add_node(self, pi: Set[str] = None):
         """Add next node as head"""
         new_node = TraceNode(
             node_id=self.next_id, pi=pi)
@@ -35,3 +37,4 @@ class TraceList:
     def size(self):
         """Size of list"""
         return self.next_id
+
