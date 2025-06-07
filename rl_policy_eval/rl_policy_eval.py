@@ -220,7 +220,8 @@ class PolicyEvalQL():
         """
         # Get medians and corresponding steps
         trials = np.empty((num_measure, 0))
-        for _ in tqdm(range(num_trials)):
+        # May put tqdm here
+        for _ in range(num_trials):
             trials = np.column_stack((
                 trials,
                 self.one_trial(
@@ -262,6 +263,4 @@ class PolicyEvalQL():
         )
 
         if save != "":
-            fig.savefig(save + ".png")
-
-        plt.show()
+            fig.savefig(save + ".svg")
