@@ -11,6 +11,7 @@ class TraceNode:
             pi = set()
         self.pi = pi
         self.next = None
+        self.prev = None
 
 class TraceList:
     """Trace linked list"""
@@ -28,4 +29,9 @@ class TraceList:
         back = self.head
         self.head = new_node
         self.head.next = back
+        if back is not None:
+            back.prev = self.head
 
+    def size(self):
+        """Size of list"""
+        return self.next_id
