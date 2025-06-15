@@ -40,6 +40,7 @@ class QLAgent(Agent):
         self.lr = learning_rate
         self.discount_factor = discount_factor
 
+        self.initial_epsilon = initial_epsilon
         self.epsilon = initial_epsilon
         self.epsilon_decay = epsilon_decay
         self.final_epsilon = final_epsilon
@@ -48,7 +49,7 @@ class QLAgent(Agent):
         newone = type(self)(
             env=copy.deepcopy(self.env),
             learning_rate=self.lr,
-            initial_epsilon=self.epsilon,
+            initial_epsilon=self.initial_epsilon,
             epsilon_decay=self.epsilon_decay,
             final_epsilon=self.final_epsilon,
             discount_factor=self.discount_factor,
