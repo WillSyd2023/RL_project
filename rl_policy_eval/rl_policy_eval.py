@@ -78,7 +78,6 @@ class PolicyEvalQL():
             step=1,
         )
         self.medians = 0
-        self.max_reward = 0
         self.num_trials = 0
 
     
@@ -239,14 +238,20 @@ class PolicyEvalQL():
             step=1,
         ) * steps_measure
         self.medians = medians
-        self.max_reward = time_limit
         self.num_trials = num_trials
 
-    def visualise(self, save: str = "", title: str ="Policy Evaluation"):
+    def visualise(
+        self, 
+        save: str = "", 
+        title: str ="Policy Evaluation",
+        max_reward: int = 1_000,
+        ):
         """Visualise outcome after trials
 
-        Only arg is save - "" if not saving any picture (default);
-        some title if saving .png picture
+        Args:
+            save - title of saved picture; no picture saved by default
+            title - title for graph; "Policy Evaluation" by default
+            max_reward - maximum reward that can be achieved by agent; 1_000 by default
         """
         fig, ax = plt.subplots()
         ax.plot(self.steps, self.medians)
@@ -257,7 +262,7 @@ class PolicyEvalQL():
             title=title + ": " + str(self.num_trials) + " trials",
         )
         ax.axhline(
-            y=self.max_reward,
+            y=max_reward,
             linestyle="--",
             label="Maximum reward",
         )
