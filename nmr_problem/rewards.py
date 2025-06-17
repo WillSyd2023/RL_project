@@ -35,7 +35,6 @@ def nm_reward_1(trace: TraceList) -> int:
     reward = 10
     node = trace.head
     for action in latest_actions:
-        
         if action in node.pi:
             node = node.next
         else:
@@ -53,7 +52,6 @@ def nm_reward_4(trace: TraceList) -> int:
     reward = 1
     node = trace.head
     for action in latest_actions:
-        
         if action in node.pi:
             node = node.next
         else:
