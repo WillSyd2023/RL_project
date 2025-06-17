@@ -19,6 +19,7 @@ def test_filled_list(init_list):
     second_node = init_list.head
 
     assert init_list.next_id == 2
+    assert init_list.size() == 2
     assert init_list.head is not None
     
     node = init_list.head
