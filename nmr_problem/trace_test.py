@@ -1,5 +1,7 @@
+"""Unit tests for TraceList"""
+
 import pytest
-from nmr_problem.trace import TraceNode, TraceList
+from nmr_problem.trace import TraceList
 
 @pytest.fixture
 def init_list():
