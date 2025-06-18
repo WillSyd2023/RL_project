@@ -50,7 +50,7 @@ class PercepFilterQLAgent(QLAgent):
             obs_filter=self.obs_filter,
             env=deepcopy(self.env),
             learning_rate=self.lr,
-            initial_epsilon=self.epsilon,
+            initial_epsilon=self.initial_epsilon,
             epsilon_decay=self.epsilon_decay,
             final_epsilon=self.final_epsilon,
             discount_factor=self.discount_factor,
