@@ -45,3 +45,7 @@ def test_init_two_cup_env():
     assert env._cups[1] is not env._init_cups[0][1]
     assert env._cups[1]["position"] is not env._init_cups[0][1]["position"]
 
+    assert env._init_collision == 1
+    assert env._collision == 1
+    env._collision = 2
+    assert env._init_collision == 1
