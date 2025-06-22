@@ -155,3 +155,20 @@ def test_move_right_cups_2():
         assert reward == r
         assert terminated is termin
         assert truncated is False
+
+def test_taking_no_cup():
+    """Taking when there is no cup"""
+    env = TwoCupEnv()
+
+    for act, bot_loc, cup_1, cup_2, coll, termin, r in [
+        (1, 3, 1, 1, 1, False, -1),
+    ]:
+        obs, reward, terminated, truncated, _ = env.step(act)
+
+        assert obs["bot_position"][0] == bot_loc
+        assert obs["cups"][0]["presence"] == cup_1
+        assert obs["cups"][1]["presence"] == cup_2
+        assert obs["collision_happened"] == coll
+        assert reward == r
+        assert terminated is termin
+        assert truncated is False
