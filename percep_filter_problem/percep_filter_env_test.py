@@ -1,17 +1,16 @@
 """Two-cups environment test"""
 
 import pytest
+from copy import deepcopy
 import numpy as np
 from percep_filter_problem.percep_filter_env import TwoCupEnv
 
-@pytest.fixture
-def env():
-    return TwoCupEnv()
-
-def test_init_two_cup_env(env):
+def test_init_two_cup_env():
     """Test initialised Two-Cups environment
     
     Mostly checking deepcopying"""
+    env = TwoCupEnv()
+
     assert np.array_equal(env._init_bot_loc, np.array([3], dtype=np.int8))
     assert np.array_equal(env._bot_loc, np.array([3], dtype=np.int8))
     assert env._bot_loc is not env._init_bot_loc
@@ -53,3 +52,21 @@ def test_init_two_cup_env(env):
     env._collision = 2
     assert env._init_collision == 1
 
+env = TwoCupEnv()
+env._cups = deepcopy(env._init_cups[0])
+@pytest.mark.parametrize(
+    "act, bot_loc, cup_1, cup_2, coll, termin, r",
+    [
+        (0, 2, 1, 1, 1, False, -1),
+    ],
+)
+def test_move_left_cups_1(act, bot_loc, cup_1, cup_2, coll, termin, r):
+    """Move bot to the left, then test collision
+
+    Do this with first initial two-cups configuration
+    """
+    obs, reward, terminated, truncated, _ = env.step(act)
+
+    assert reward == r
+    assert terminated is termin
+    assert truncated is False
