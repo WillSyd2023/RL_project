@@ -52,7 +52,7 @@ def test_init_two_cup_env():
     env._collision = 2
     assert env._init_collision == 1
 
-def test_move_left_cups_1():
+def test_move_left_cups():
     """Move bot to the left, then test collision
 
     Do this with first initial two-cups configuration
@@ -182,6 +182,60 @@ def test_retaking_cup():
         (2, 4, 1, 1, 1, False, -1),
         (1, 4, 1, 0, 1, False, 1),
         (1, 4, 1, 0, 1, False, -1),
+    ]:
+        obs, reward, terminated, truncated, _ = env.step(act)
+
+        assert obs["bot_position"][0] == bot_loc
+        assert obs["cups"][0]["presence"] == cup_1
+        assert obs["cups"][1]["presence"] == cup_2
+        assert obs["collision_happened"] == coll
+        assert reward == r
+        assert terminated is termin
+        assert truncated is False
+
+def test_terminated_1():
+    """Test taking both cups, leading to termination
+
+    Do this with first initial two-cups configuration
+    """
+    env = TwoCupEnv()
+    env._cups = deepcopy(env._init_cups[0])
+
+    for act, bot_loc, cup_1, cup_2, coll, termin, r in [
+        (2, 4, 1, 1, 1, False, -1),
+        (1, 4, 1, 0, 1, False, 1),
+        (0, 3, 1, 0, 1, False, -1),
+        (0, 2, 1, 0, 1, False, -1),
+        (0, 1, 1, 0, 1, False, -1),
+        (0, 0, 1, 0, 1, False, -1),
+        (1, 0, 0, 0, 1, True, 1),
+    ]:
+        obs, reward, terminated, truncated, _ = env.step(act)
+
+        assert obs["bot_position"][0] == bot_loc
+        assert obs["cups"][0]["presence"] == cup_1
+        assert obs["cups"][1]["presence"] == cup_2
+        assert obs["collision_happened"] == coll
+        assert reward == r
+        assert terminated is termin
+        assert truncated is False
+
+def test_terminated_2():
+    """Test taking both cups, leading to termination
+
+    Do this with first initial two-cups configuration
+    """
+    env = TwoCupEnv()
+    env._cups = deepcopy(env._init_cups[1])
+
+    for act, bot_loc, cup_1, cup_2, coll, termin, r in [
+        (0, 2, 1, 1, 1, False, -1),
+        (1, 2, 0, 1, 1, False, 1),
+        (2, 3, 0, 1, 1, False, -1),
+        (2, 4, 0, 1, 1, False, -1),
+        (2, 5, 0, 1, 1, False, -1),
+        (2, 6, 0, 1, 1, False, -1),
+        (1, 6, 0, 0, 1, True, 1),
     ]:
         obs, reward, terminated, truncated, _ = env.step(act)
 
