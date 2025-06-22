@@ -52,30 +52,54 @@ def test_init_two_cup_env():
     env._collision = 2
     assert env._init_collision == 1
 
-env = TwoCupEnv()
-env._cups = deepcopy(env._init_cups[0])
-@pytest.mark.parametrize(
-    "act, bot_loc, cup_1, cup_2, coll, termin, r",
-    [
+def test_move_left_cups_1():
+    """Move bot to the left, then test collision
+
+    Do this with first initial two-cups configuration
+    """
+    env = TwoCupEnv()
+    env._cups = deepcopy(env._init_cups[0])
+
+    for act, bot_loc, cup_1, cup_2, coll, termin, r in [
         (0, 2, 1, 1, 1, False, -1),
         (0, 1, 1, 1, 1, False, -1),
         (0, 0, 1, 1, 1, False, -1),
         (0, 0, 1, 1, 0, False, -1),
         (0, 0, 1, 1, 0, False, -1),
         (2, 1, 1, 1, 1, False, -1),
-    ],
-)
-def test_move_left_cups_1(act, bot_loc, cup_1, cup_2, coll, termin, r):
+    ]:
+        obs, reward, terminated, truncated, _ = env.step(act)
+
+        assert obs["bot_position"][0] == bot_loc
+        assert obs["cups"][0]["presence"] == cup_1
+        assert obs["cups"][1]["presence"] == cup_2
+        assert obs["collision_happened"] == coll
+        assert reward == r
+        assert terminated is termin
+        assert truncated is False
+
+def test_move_left_cups_2():
     """Move bot to the left, then test collision
 
-    Do this with first initial two-cups configuration
+    Do this with second initial two-cups configuration
     """
-    obs, reward, terminated, truncated, _ = env.step(act)
+    env = TwoCupEnv()
+    env._cups = deepcopy(env._init_cups[1])
 
-    assert obs["bot_position"][0] == bot_loc
-    assert obs["cups"][0]["presence"] == cup_1
-    assert obs["cups"][1]["presence"] == cup_2
-    assert obs["collision_happened"] == coll
-    assert reward == r
-    assert terminated is termin
-    assert truncated is False
+    for act, bot_loc, cup_1, cup_2, coll, termin, r in [
+        (0, 2, 1, 1, 1, False, -1),
+        (0, 1, 1, 1, 1, False, -1),
+        (0, 0, 1, 1, 1, False, -1),
+        (0, 0, 1, 1, 0, False, -1),
+        (0, 0, 1, 1, 0, False, -1),
+        (2, 1, 1, 1, 1, False, -1),
+    ]:
+        obs, reward, terminated, truncated, _ = env.step(act)
+
+        assert obs["bot_position"][0] == bot_loc
+        assert obs["cups"][0]["presence"] == cup_1
+        assert obs["cups"][1]["presence"] == cup_2
+        assert obs["collision_happened"] == coll
+        assert reward == r
+        assert terminated is termin
+        assert truncated is False
