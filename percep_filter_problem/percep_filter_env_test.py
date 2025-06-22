@@ -58,6 +58,11 @@ env._cups = deepcopy(env._init_cups[0])
     "act, bot_loc, cup_1, cup_2, coll, termin, r",
     [
         (0, 2, 1, 1, 1, False, -1),
+        (0, 1, 1, 1, 1, False, -1),
+        (0, 0, 1, 1, 1, False, -1),
+        (0, 0, 1, 1, 0, False, -1),
+        (0, 0, 1, 1, 0, False, -1),
+        (2, 1, 1, 1, 1, False, -1),
     ],
 )
 def test_move_left_cups_1(act, bot_loc, cup_1, cup_2, coll, termin, r):
