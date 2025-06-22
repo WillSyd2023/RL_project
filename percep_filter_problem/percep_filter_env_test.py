@@ -172,3 +172,23 @@ def test_taking_no_cup():
         assert reward == r
         assert terminated is termin
         assert truncated is False
+
+def test_retaking_cup():
+    """Test retaking a cup"""
+    env = TwoCupEnv()
+    env._cups = deepcopy(env._init_cups[0])
+
+    for act, bot_loc, cup_1, cup_2, coll, termin, r in [
+        (2, 4, 1, 1, 1, False, -1),
+        (1, 4, 1, 0, 1, False, 1),
+        (1, 4, 1, 0, 1, False, -1),
+    ]:
+        obs, reward, terminated, truncated, _ = env.step(act)
+
+        assert obs["bot_position"][0] == bot_loc
+        assert obs["cups"][0]["presence"] == cup_1
+        assert obs["cups"][1]["presence"] == cup_2
+        assert obs["collision_happened"] == coll
+        assert reward == r
+        assert terminated is termin
+        assert truncated is False
