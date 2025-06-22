@@ -1,14 +1,17 @@
 """Two-cups environment test"""
 
+import pytest
 import numpy as np
 from percep_filter_problem.percep_filter_env import TwoCupEnv
 
-def test_init_two_cup_env():
+@pytest.fixture
+def env():
+    return TwoCupEnv()
+
+def test_init_two_cup_env(env):
     """Test initialised Two-Cups environment
     
-    Mostly checkaing deepcopying"""
-    env = TwoCupEnv()
-
+    Mostly checking deepcopying"""
     assert np.array_equal(env._init_bot_loc, np.array([3], dtype=np.int8))
     assert np.array_equal(env._bot_loc, np.array([3], dtype=np.int8))
     assert env._bot_loc is not env._init_bot_loc
@@ -49,3 +52,4 @@ def test_init_two_cup_env():
     assert env._collision == 1
     env._collision = 2
     assert env._init_collision == 1
+
