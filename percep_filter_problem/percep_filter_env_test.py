@@ -67,6 +67,10 @@ def test_move_left_cups_1(act, bot_loc, cup_1, cup_2, coll, termin, r):
     """
     obs, reward, terminated, truncated, _ = env.step(act)
 
+    assert obs["bot_position"][0] == bot_loc
+    assert obs["cups"][0]["presence"] == cup_1
+    assert obs["cups"][1]["presence"] == cup_2
+    assert obs["collision_happened"] == coll
     assert reward == r
     assert terminated is termin
     assert truncated is False
