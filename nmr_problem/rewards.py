@@ -10,7 +10,7 @@ def m_reward_1(trace: TraceList) -> int:
     node = trace.head
     
     if "3" in node.pi:
-        return 10
+        return 100_000
     else:
         return 0
 
