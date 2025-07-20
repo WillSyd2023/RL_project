@@ -68,7 +68,9 @@ class PercepFilterQLAgent(QLAgent):
         Returns action, which will be integer
         """
         # Filter observation first
-        return super()._get_action_core(self.obs_filter(obs))
+        obs = self.obs_filter(obs)
+        assert isinstance(obs, str), f"Expected obs to be str, got {type(obs).__name__}: {obs}"
+        return super()._get_action_core(obs)
     
     def update(
         self,
@@ -88,10 +90,17 @@ class PercepFilterQLAgent(QLAgent):
             next_obs: next observation; same typing as obs
         """
         # Filter observations first
+        obs = self.obs_filter(obs)
+        next_obs = self.obs_filter(next_obs)
+        assert isinstance(obs, str), f"Expected obs to be str, got {type(obs).__name__}: {obs}"
+        assert isinstance(action, int) and not isinstance(reward, bool), f"Expected action to be int, got {type(action).__name__}: {action}"
+        assert isinstance(reward, int) and not isinstance(reward, bool), f"Expected reward to be int, got {type(reward).__name__}: {reward}"
+        assert isinstance(terminated, bool), f"Expected terminated to be bool, got {type(terminated).__name__}: {terminated}"
+        assert isinstance(next_obs, str), f"Expected next_obs to be str, got {type(next_obs).__name__}: {next_obs}"
         super()._update_core(
-            obs=self.obs_filter(obs),
+            obs=obs,
             action=action,
             reward=reward,
             terminated=terminated,
-            next_obs=self.obs_filter(next_obs),
+            next_obs=next_obs,
         )

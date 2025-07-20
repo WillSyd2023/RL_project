@@ -10,7 +10,7 @@ def m_reward_1(trace: TraceList) -> int:
     node = trace.head
     
     if "3" in node.pi:
-        return 100_000
+        return 1
     else:
         return 0
 
@@ -32,7 +32,7 @@ def nm_reward_1(trace: TraceList) -> int:
         return 0
 
     latest_actions = ["3", "1", "1", "1", "1"]
-    reward = 10
+    reward = 1
     node = trace.head
     for action in latest_actions:
         if action in node.pi:

@@ -75,6 +75,7 @@ class QLAgent(Agent):
         
         Returns action, which will be integer
         """
+        assert isinstance(obs, str), f"Expected obs to be str, got {type(obs).__name__}: {obs}"
         return self._get_action_core(obs)
 
     def _update_core(
@@ -112,6 +113,11 @@ class QLAgent(Agent):
             terminated: must be boolean
             next_obs: next observation, must be string
         """
+        assert isinstance(obs, str), f"Expected obs to be str, got {type(obs).__name__}: {obs}"
+        assert isinstance(action, int) and not isinstance(reward, bool), f"Expected action to be int, got {type(action).__name__}: {action}"
+        assert isinstance(reward, int) and not isinstance(reward, bool), f"Expected reward to be int, got {type(reward).__name__}: {reward}"
+        assert isinstance(terminated, bool), f"Expected terminated to be bool, got {type(terminated).__name__}: {terminated}"
+        assert isinstance(next_obs, str), f"Expected next_obs to be str, got {type(next_obs).__name__}: {next_obs}"
         self._update_core(obs, action, reward, terminated, next_obs)
 
     def decay_epsilon(self):

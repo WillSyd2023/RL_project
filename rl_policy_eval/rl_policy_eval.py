@@ -98,9 +98,7 @@ class PolicyEvalQL():
 
         for _ in range(steps):
             action = agent.get_action(obs)
-            print("action: ", action)
             next_obs, reward, terminated, _, _ = self.training_env.step(action)
-            print("reward: ", reward)
             agent.update(obs, action, reward, terminated, next_obs)
             obs = next_obs
         
@@ -181,7 +179,6 @@ class PolicyEvalQL():
         # Train agent and run tests
         # Record results on a list
         averages = np.empty(0)
-        print(self.train_agent.q_values["s"])
         for _ in range(num_measure):
             self.train_steps(steps_measure)
             averages = np.append(
