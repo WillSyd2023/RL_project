@@ -68,7 +68,7 @@ def test_steps_given_nm_rewards():
     ]
 
     for trace_size, action, r in test_cases:
-        observation, terminated, truncated, reward, _ = nm_env.step(action)
+        observation, reward, terminated, truncated, _ = nm_env.step(action)
         assert nm_env.trace.size() == trace_size
         assert observation == "s"
         assert terminated is False
@@ -78,7 +78,7 @@ def test_steps_given_nm_rewards():
     nm_env = deepcopy(nm_env)
 
     for trace_size, action, r in test_cases:
-        observation, terminated, truncated, reward, _ = nm_env.step(action)
+        observation, reward, terminated, truncated, _ = nm_env.step(action)
         assert nm_env.trace.size() == trace_size
         assert observation == "s"
         assert terminated is False
@@ -103,7 +103,7 @@ def test_steps_given_m_rewards():
     ]
 
     for trace_size, action, r in test_cases:
-        observation, terminated, truncated, reward, _ = m_env.step(action)
+        observation, reward, terminated, truncated, _ = m_env.step(action)
         assert m_env.trace.size() == trace_size
         assert observation == "s"
         assert terminated is False
@@ -113,7 +113,7 @@ def test_steps_given_m_rewards():
     m_env = deepcopy(m_env)
 
     for trace_size, action, r in test_cases:
-        observation, terminated, truncated, reward, _ = m_env.step(action)
+        observation, reward, terminated, truncated, _ = m_env.step(action)
         assert m_env.trace.size() == trace_size
         assert observation == "s"
         assert terminated is False

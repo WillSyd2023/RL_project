@@ -69,7 +69,7 @@ class NonMarkovMABEnv(gym.Env):
             for call in self.rewards:
                 reward += call(self.trace)
         
-        return observation, terminated, truncated, reward, self._get_info()
+        return observation, reward, terminated, truncated, self._get_info()
 
     def render(self):
         """Render function
