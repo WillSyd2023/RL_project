@@ -87,3 +87,16 @@ def test_avg_reward_per_eps(dummy_agent):
     """Test avg_reward_per_eps method for policy evaluation"""
     policy = PolicyEvalQL(agent=dummy_agent)
     assert int(policy.avg_reward_per_eps()) == 1_000
+
+def test_one_trial(dummy_agent):
+    """Test one_trial method for policy evaluation"""
+    policy = PolicyEvalQL(agent=dummy_agent)
+    array = np.full(50, 1000.0)
+    np.testing.assert_array_equal(array, policy.one_trial())
+
+def test_trials(dummy_agent):
+    """Test trials method for policy evaluation"""
+    policy = PolicyEvalQL(agent=dummy_agent)
+    array = np.full(50, 1000.0)
+    policy.trials()
+    np.testing.assert_array_equal(array, policy.medians)
