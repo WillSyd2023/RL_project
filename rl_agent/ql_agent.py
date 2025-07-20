@@ -23,6 +23,7 @@ class QLAgent(Agent):
         epsilon_decay: float = 0,
         final_epsilon: float = 0.1,
         discount_factor: float = 0.99,
+        seed: int = 0,
     ):
         """Initialise Q-learning RL agent
 
@@ -45,6 +46,9 @@ class QLAgent(Agent):
         self.epsilon_decay = epsilon_decay
         self.final_epsilon = final_epsilon
 
+        self.seed=seed
+        self.random = np.random.default_rng(seed)
+
     def __deepcopy__(self, memo):
         newone = type(self)(
             env=copy.deepcopy(self.env),
@@ -53,14 +57,15 @@ class QLAgent(Agent):
             epsilon_decay=self.epsilon_decay,
             final_epsilon=self.final_epsilon,
             discount_factor=self.discount_factor,
+            seed=self.seed,
         )
         newone.q_values = copy.deepcopy(self.q_values)
         return newone
 
     def _get_action_core(self, obs: str) -> int:
         # with probability epsilon return a random action to explore the environment
-        if np.random.random() < self.epsilon:
-            return self.env.action_space.sample()
+        if self.random.random() < self.epsilon:
+            return int(self.env.action_space.sample())
 
         # with probability (1 - epsilon) act greedily (exploit)
         return int(np.argmax(self.q_values[obs]))
@@ -76,7 +81,8 @@ class QLAgent(Agent):
         Returns action, which will be integer
         """
         assert isinstance(obs, str), f"Expected obs to be str, got {type(obs).__name__}: {obs}"
-        return self._get_action_core(obs)
+        action = self._get_action_core(obs)
+        return action
 
     def _update_core(
         self,
