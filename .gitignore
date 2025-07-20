@@ -174,4 +174,3 @@ cython_debug/
 .DS_Store
 setup.py
 run.py
-bit_problem/
