@@ -8,13 +8,16 @@ from percep_filter_problem.percep_filter_env import TwoCupEnv
 def test_init_two_cup_env():
     """Test initialised Two-Cups environment
     
-    Mostly checking deepcopying"""
+    Particularly, that deepcopying in __init__ process worked as intended
+    """
     env = TwoCupEnv()
 
+    # _init_bot_loc vs deepcopy _bot_loc
     assert np.array_equal(env._init_bot_loc, np.array([3], dtype=np.int8))
     assert np.array_equal(env._bot_loc, np.array([3], dtype=np.int8))
     assert env._bot_loc is not env._init_bot_loc
 
+    # _init_cups[0] vs deepcopy _cups
     assert isinstance(env._init_cups[0], tuple)
     assert len(env._init_cups[0]) == 2
     assert isinstance(env._init_cups[0][0], dict)
@@ -47,6 +50,7 @@ def test_init_two_cup_env():
     assert env._cups[1] is not env._init_cups[0][1]
     assert env._cups[1]["position"] is not env._init_cups[0][1]["position"]
 
+    # deepcopy collision
     assert env._init_collision == 1
     assert env._collision == 1
     env._collision = 2
