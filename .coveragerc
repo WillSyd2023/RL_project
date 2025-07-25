@@ -1,0 +1,34 @@
+[run]
+branch = True
+source = nmr_problem, percep_filter_problem, rl_agent, rl_policy_eval
+omit = 
+    */__init__.py
+    */__pycache__/*
+    */tests/*
+    */*_test.py
+    */test.py
+    setup.py
+    */run.py
+    rl_project.egg-info/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    raise ImportError
+    if __name__ == .__main__.:
+    pass
+    @abstractmethod
+    @property
+    @.*setter
+ignore_errors = True
+show_missing = True
+skip_covered = True
+
+[html]
+directory = htmlcov
+
+[paths]
+source =
+    .

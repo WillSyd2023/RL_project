@@ -2,3 +2,4 @@ numpy
 matplotlib
 gymnasium
 pytest
+pytest-cov
