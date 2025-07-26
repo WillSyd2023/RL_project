@@ -267,4 +267,4 @@ class PolicyEvalQL():
         )
 
         if save != "":
-            fig.savefig(save + ".svg")
+            fig.savefig(save + ".png")
