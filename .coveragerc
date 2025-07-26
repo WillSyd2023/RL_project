@@ -11,18 +11,15 @@ omit =
     */tests/*
     setup.py
     */run.py
+    run.py
     rl_project.egg-info/*
 
 [report]
 exclude_lines =
     pragma: no cover
-    def __repr__
-    raise NotImplementedError
-    raise ImportError
-    if __name__ == .__main__.:
-    pass
     @abstractmethod
-    @property
-    @.*setter
 ignore_errors = True
 show_missing = True
+
+[html]
+directory = htmlcov

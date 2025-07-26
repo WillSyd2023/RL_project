@@ -175,3 +175,4 @@ cython_debug/
 setup.py
 run.py
 *.svg
+*.png

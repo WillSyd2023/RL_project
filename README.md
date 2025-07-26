@@ -43,19 +43,8 @@ This approach is directly inspired by the method described in Braun (2021) *Gett
 ### Testing
 - Uses `pytest` for unit testing
 #### Current code coverage:
-| File                                               | Stmts | Miss | Branch | BrPart | Cover |Missing                         |
-|----------------------------------------------------|-------|------|--------|--------|--------|----------------------------------|
-| `nmr_problem/nmr_mab_env.py`                       | 34    | 1    | 4      | 1      | 95%    | 68→72, 79                       |
-| `nmr_problem/nmr_trace.py`                       | 23    | 0    | 4      | 0      | 100%    |                           |
-| `nmr_problem/rewards.py`                           | 39    | 2    | 20     | 2      | 93%    | 8, 20                           |
-| `percep_filter_problem/percep_filter.py`           | 30    | 0   | 14     | 0      | 100%     |                           |
-| `percep_filter_problem/percep_filter_env.py`       | 57    | 3    | 10     | 0      | 96%    | 85–86, 156              |
-| `percep_filter_problem/percep_filter_ql_agent.py`  | 26    | 2   | 0      | 0      | 92%     | 49-58                           |
-| `rl_agent/parent_agent.py`                             | 3    | 0    | 0      | 0      | 100%    |                           |
-| `rl_agent/ql_agent.py`                             | 43    | 4    | 2      | 0      | 91%    | 53–63, 131                      |
-| `rl_policy_eval/rl_policy_eval.py`                 | 83    | 7    | 16     | 2      | 89%    | 57, 67→69, 255–270              |
-| **TOTAL**                                          | 338   | 19   | 70     | 5      | **94%** |                                  |
-
+![Coverage](report.png)
+- generated using `pytest` and `pytest-cov`
 ### Getting Started
 Just clone project and install requirements.txt.
 ### Run Demos
