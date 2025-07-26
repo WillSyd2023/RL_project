@@ -7,7 +7,7 @@ from typing import List, Callable, Optional
 from copy import deepcopy
 import gymnasium as gym
 from gymnasium.spaces import Discrete, Text
-from nmr_problem.trace import TraceList
+from nmr_problem.nmr_trace import TraceList
 
 class NonMarkovMABEnv(gym.Env):
     """Environment for simulating MAB with non-Markovian rewards

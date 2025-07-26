@@ -1,6 +1,6 @@
 """(Non-)Markovian rewards"""
 
-from nmr_problem.trace import TraceList
+from nmr_problem.nmr_trace import TraceList
 
 def m_reward_1(trace: TraceList) -> int:
     """Reward for using arm 3"""

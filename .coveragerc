@@ -1,12 +1,14 @@
 [run]
 branch = True
-source = nmr_problem, percep_filter_problem, rl_agent, rl_policy_eval
-omit = 
+source =
+    nmr_problem
+    percep_filter_problem
+    rl_agent
+    rl_policy_eval
+omit =
     */__init__.py
     */__pycache__/*
     */tests/*
-    */*_test.py
-    */test.py
     setup.py
     */run.py
     rl_project.egg-info/*
@@ -24,11 +26,3 @@ exclude_lines =
     @.*setter
 ignore_errors = True
 show_missing = True
-skip_covered = True
-
-[html]
-directory = htmlcov
-
-[paths]
-source =
-    .

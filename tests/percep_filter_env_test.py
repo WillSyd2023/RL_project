@@ -3,7 +3,6 @@
 from copy import deepcopy
 import numpy as np
 from percep_filter_problem.percep_filter_env import TwoCupEnv
-from percep_filter_problem.percep_filter import filter_four_bits, filter_complete
 
 def test_init_two_cup_env():
     """Test initialised Two-Cups environment
