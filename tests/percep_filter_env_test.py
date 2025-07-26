@@ -1,9 +1,9 @@
 """Two-cups environment test"""
 
-import pytest
 from copy import deepcopy
 import numpy as np
 from percep_filter_problem.percep_filter_env import TwoCupEnv
+from percep_filter_problem.percep_filter import filter_four_bits, filter_complete
 
 def test_init_two_cup_env():
     """Test initialised Two-Cups environment
@@ -56,7 +56,7 @@ def test_init_two_cup_env():
     env._collision = 2
     assert env._init_collision == 1
 
-def test_move_left_cups():
+def test_move_left_cups_1():
     """Move bot to the left, then test collision
 
     Do this with first initial two-cups configuration

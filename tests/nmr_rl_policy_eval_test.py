@@ -4,7 +4,7 @@ import numpy as np
 from rl_policy_eval.rl_policy_eval import PolicyEvalQL
 from rl_agent.ql_agent import QLAgent
 from nmr_problem.nmr_mab_env import NonMarkovMABEnv
-from nmr_problem.rewards import m_reward_1#, m_reward_4, nm_reward_1, nm_reward_4
+from nmr_problem.rewards import m_reward_1
 
 def test_train_steps_nmr_problem_markovian():
     """
