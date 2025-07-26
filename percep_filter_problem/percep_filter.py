@@ -16,6 +16,12 @@ def filter_four_bits(
             ],
         ]
     ) -> str:
+    """Filter obs. to 4 bits (hence making process non-Markovian):
+    1. Is there a cup in the immediate left of bot
+    2. Is there a cup in the immediate right of bot
+    3. Was there just previously collision on the left
+    4. Was there just previously collision on the right
+    """
     bits = ""
 
     # 1. Check if there is a cup in the immediate left of bot
@@ -59,6 +65,14 @@ def filter_complete(
             ],
         ]
     ) -> str:
+    """Filter obs. to bits representing complete env. information (hence making process Markovian):
+    1. current bot position
+    2. leftmost cup initialised position
+    3. is leftmost cup present now?
+    4. rightmost cup initialised position
+    5. is rightmost cup present now?
+    6. Was there just previously collision? 0 for left collision, 1 for no collision, 2 for right collision
+    """
     state = ""
     state += str(obs["bot_position"][0]) + ","
     for cup in obs["cups"]:
