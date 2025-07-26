@@ -13,12 +13,7 @@ def test_train_steps_nmr_problem_markovian():
     """
     env = NonMarkovMABEnv(rewards=[m_reward_1])
     agent = QLAgent(env=env)
-    policy = PolicyEvalQL(
-    agent=agent,
-    initial_epsilon=1.0,
-    epsilon_decay=0.00005,
-    final_epsilon=0.1,
-    )
+    policy = PolicyEvalQL(agent=agent)
 
     before = policy.train_agent.q_values["s"].copy()
     policy.train_steps(steps=100)
