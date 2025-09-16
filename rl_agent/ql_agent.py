@@ -59,6 +59,7 @@ class QLAgent(Agent):
             discount_factor=self.discount_factor,
             seed=self.seed,
         )
+        newone.epsilon = self.epsilon
         newone.q_values = copy.deepcopy(self.q_values)
         return newone
 

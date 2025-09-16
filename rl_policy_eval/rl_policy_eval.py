@@ -58,9 +58,8 @@ class PolicyEvalQL():
         if env is None:
             raise ValueError("Need to define agent's environment (inside agent)")
         self.original_env = env
-        if test_env is None:
-            self.ori_test_env = env
-        else:
+        self.ori_test_env = env
+        if test_env is not None:
             self.ori_test_env = test_env
 
         self.ori_agent = agent
@@ -133,13 +132,13 @@ class PolicyEvalQL():
         # Initialise agent for testing
         test_agent = deepcopy(self.ori_agent)
         test_agent.env = env
+        test_agent.q_values = deepcopy(self.train_agent.q_values)
         test_agent.learning_rate = 0
+        test_agent.discount_factor = 0
         test_agent.initial_epsilon = 0
+        test_agent.epsilon = 0
         test_agent.epsilon_decay = 0
         test_agent.final_epsilon = 0
-        test_agent.discount_factor = 0
-
-        test_agent.q_values = deepcopy(self.train_agent.q_values)
 
         # Record cumulative reward for every single step
         # (n_eps * time_limit)
