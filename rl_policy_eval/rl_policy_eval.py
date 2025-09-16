@@ -6,6 +6,7 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
 from gymnasium.wrappers import TimeLimit
+import gymnasium as gym
 
 from rl_agent.ql_agent import QLAgent
 
@@ -27,7 +28,8 @@ class PolicyEvalQL():
     def __init__(
         self,
         agent: QLAgent,
-        q_values = None,
+        test_env: gym.Env = None,
+        q_values: defaultdict = None,
         learning_rate: float = 0.01,
         initial_epsilon: float = 0.1,
         epsilon_decay: float = 0,
@@ -56,6 +58,10 @@ class PolicyEvalQL():
         if env is None:
             raise ValueError("Need to define agent's environment (inside agent)")
         self.original_env = env
+        if test_env is None:
+            self.test_env = env
+        else:
+            self.test_env = test_env
 
         self.ori_agent = agent
         self.ori_agent.learning_rate = learning_rate
@@ -121,7 +127,7 @@ class PolicyEvalQL():
         Returns average reward
         """
         # Copy environment from original and set time limit
-        env = deepcopy(self.original_env)
+        env = deepcopy(self.test_env)
         env = TimeLimit(env, max_episode_steps=time_limit)
 
         # Initialise agent for testing
