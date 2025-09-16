@@ -59,9 +59,9 @@ class PolicyEvalQL():
             raise ValueError("Need to define agent's environment (inside agent)")
         self.original_env = env
         if test_env is None:
-            self.test_env = env
+            self.ori_test_env = env
         else:
-            self.test_env = test_env
+            self.ori_test_env = test_env
 
         self.ori_agent = agent
         self.ori_agent.learning_rate = learning_rate
@@ -127,7 +127,7 @@ class PolicyEvalQL():
         Returns average reward
         """
         # Copy environment from original and set time limit
-        env = deepcopy(self.test_env)
+        env = deepcopy(self.ori_test_env)
         env = TimeLimit(env, max_episode_steps=time_limit)
 
         # Initialise agent for testing

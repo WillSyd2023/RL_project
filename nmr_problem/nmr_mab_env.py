@@ -12,8 +12,6 @@ from nmr_problem.nmr_trace import TraceList
 class NonMarkovMABEnv(gym.Env):
     """Environment for simulating MAB with non-Markovian rewards
 
-    Warning: deepcopying will wipe out trace list memory
-
     Args:
     - actions: number of actions possible; default is 5
     - rewards: non-Markovian rewards which takes TraceList and returns
@@ -39,6 +37,7 @@ class NonMarkovMABEnv(gym.Env):
             actions=self.actions,
             rewards=deepcopy(self.rewards),
         )
+        newone.trace = self.trace
         return newone
     
     def _get_info(self):

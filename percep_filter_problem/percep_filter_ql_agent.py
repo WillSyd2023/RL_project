@@ -55,6 +55,7 @@ class PercepFilterQLAgent(QLAgent):
             final_epsilon=self.final_epsilon,
             discount_factor=self.discount_factor,
         )
+        newone.q_values = deepcopy(self.q_values)
         return newone
 
     def get_action(self, obs):

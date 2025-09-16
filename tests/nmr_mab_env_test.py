@@ -39,9 +39,9 @@ def test_deepcopy():
     # Deepcopy copies actions
     assert env_copy.actions == env.actions
 
-    # Deepcopy resets trace
-    assert env_copy.trace.head is None
-    assert env_copy.trace.size() == 0
+    # Deepcopy does not reset trace
+    assert env_copy.trace.head is not None
+    assert env_copy.trace.size() == 6
 
     # Deepcopy copies
     assert env.rewards is not env_copy.rewards
@@ -50,8 +50,6 @@ def test_deepcopy():
 
 def test_steps_given_nm_rewards():
     """Test step behavior of Non-Markovian environment
-
-    Even when deepcopied
 
     Check outputs from sequential behaviour, after each step
     """
@@ -74,21 +72,9 @@ def test_steps_given_nm_rewards():
         assert terminated is False
         assert truncated is False
         assert reward == r
-    
-    nm_env = deepcopy(nm_env)
-
-    for trace_size, action, r in test_cases:
-        observation, reward, terminated, truncated, _ = nm_env.step(action)
-        assert nm_env.trace.size() == trace_size
-        assert observation == "s"
-        assert terminated is False
-        assert truncated is False
-        assert reward == r
 
 def test_steps_given_m_rewards():
     """Test step behavior of Markovian environment
-
-    Even when deepcopied
 
     Check outputs from sequential behaviour, after each step
     """
@@ -101,16 +87,6 @@ def test_steps_given_m_rewards():
         (4, 4, 0),
         (5, 5, 0),
     ]
-
-    for trace_size, action, r in test_cases:
-        observation, reward, terminated, truncated, _ = m_env.step(action)
-        assert m_env.trace.size() == trace_size
-        assert observation == "s"
-        assert terminated is False
-        assert truncated is False
-        assert reward == r
-    
-    m_env = deepcopy(m_env)
 
     for trace_size, action, r in test_cases:
         observation, reward, terminated, truncated, _ = m_env.step(action)
