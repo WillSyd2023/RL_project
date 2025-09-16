@@ -35,14 +35,14 @@ class BitEnv(gym.Env):
 
     def _sample_obs(self):
         p = self._p
-        if self.np_random.random() < p:
+        if self.np_random.random() <= p:
             self._obs = 1
         else:
             self._obs = 0
 
     def get_obs(self):
         """Return currently-stored obs."""
-        return self._obs
+        return str(self._obs)
 
     def reset(self, *, seed: Optional[int] = None, options: Optional[dict] = None):
         """Reset function
@@ -53,7 +53,7 @@ class BitEnv(gym.Env):
         super().reset(seed=seed)
         self._sample_obs()
 
-        return self._obs, self._get_info()
+        return str(self._obs), self._get_info()
 
     def step(self, action):
         """Step function
@@ -72,7 +72,7 @@ class BitEnv(gym.Env):
         terminated = False
         truncated = False
 
-        return self._obs, reward, terminated, truncated, self._get_info()
+        return str(self._obs), reward, terminated, truncated, self._get_info()
 
     def render(self):
         """Render function
