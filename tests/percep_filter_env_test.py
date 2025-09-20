@@ -11,49 +11,47 @@ def test_init_two_cup_env():
     """
     env = TwoCupEnv()
 
-    # _init_bot_loc vs deepcopy _bot_loc
-    assert np.array_equal(env._init_bot_loc, np.array([3], dtype=np.int8))
-    assert np.array_equal(env._bot_loc, np.array([3], dtype=np.int8))
-    assert env._bot_loc is not env._init_bot_loc
+    # init_bot_loc vs deepcopy bot_loc
+    assert np.array_equal(env.init_bot_loc, np.array([3], dtype=np.int8))
+    assert np.array_equal(env.bot_loc, np.array([3], dtype=np.int8))
+    assert env.bot_loc is not env.init_bot_loc
 
-    # _init_cups[0] vs deepcopy _cups
-    assert isinstance(env._init_cups[0], tuple)
-    assert len(env._init_cups[0]) == 2
-    assert isinstance(env._init_cups[0][0], dict)
-    for key in env._init_cups[0][0]:
-        assert key == "position" or key == "presence"
-    assert np.array_equal(env._init_cups[0][0]["position"], np.array([0], dtype=np.int8))
-    assert np.array_equal(env._init_cups[0][0]["presence"], 1)
-    assert isinstance(env._init_cups[0][1], dict)
-    for key in env._init_cups[0][1]:
-        assert key == "position" or key == "presence"
-    assert np.array_equal(env._init_cups[0][1]["position"], np.array([4], dtype=np.int8))
-    assert np.array_equal(env._init_cups[0][1]["presence"], 1)
+    # init_cups[0] vs deepcopy cups
+    target = [
+        (np.array([0], dtype=np.int8), 1),
+        (np.array([4], dtype=np.int8), 1),
+    ]
 
-    assert isinstance(env._cups, tuple)
-    assert len(env._cups) == 2
-    assert isinstance(env._cups[0], dict)
-    for key in env._cups[0]:
-        assert key == "position" or key == "presence"
-    assert np.array_equal(env._cups[0]["position"], np.array([0], dtype=np.int8))
-    assert np.array_equal(env._cups[0]["presence"], 1)
-    assert isinstance(env._cups[1], dict)
-    for key in env._cups[1]:
-        assert key == "position" or key == "presence"
-    assert np.array_equal(env._cups[1]["position"], np.array([4], dtype=np.int8))
-    assert np.array_equal(env._cups[1]["presence"], 1)
+    init_cups = env.init_cups[0]
+    assert isinstance(init_cups, tuple)
+    assert len(init_cups) == 2
+    for i, cup in enumerate(init_cups):
+        assert isinstance(cup, dict)
+        assert len(cup) == 2
+        assert set(cup.keys()) == set(["presence", "position"])
+        assert np.array_equal(cup["position"], target[i][0])
+        assert cup["presence"] == target[i][1]
 
-    assert env._cups is not env._init_cups[0]
-    assert env._cups[0] is not env._init_cups[0][0]
-    assert env._cups[0]["position"] is not env._init_cups[0][0]["position"]
-    assert env._cups[1] is not env._init_cups[0][1]
-    assert env._cups[1]["position"] is not env._init_cups[0][1]["position"]
+    assert isinstance(env.cups, tuple)
+    assert len(env.cups) == 2
+    for i, cup in enumerate(env.cups):
+        assert isinstance(cup, dict)
+        assert len(cup) == 2
+        assert set(cup.keys()) == set(["presence", "position"])
+        assert np.array_equal(cup["position"], target[i][0])
+        assert cup["presence"] == target[i][1]
 
-    # deepcopy collision
-    assert env._init_collision == 1
-    assert env._collision == 1
-    env._collision = 2
-    assert env._init_collision == 1
+    assert env.cups is not init_cups
+    assert env.cups[0] is not init_cups[0]
+    assert env.cups[0]["position"] is not init_cups[0]["position"]
+    assert env.cups[1] is not env.init_cups[0][1]
+    assert env.cups[1]["position"] is not init_cups[1]["position"]
+
+    # collision
+    assert env.init_collision == 1
+    assert env.collision == 1
+    env.collision = 2
+    assert env.init_collision == 1
 
 def test_move_left_cups_1():
     """Move bot to the left, then test collision
@@ -61,7 +59,7 @@ def test_move_left_cups_1():
     Do this with first initial two-cups configuration
     """
     env = TwoCupEnv()
-    env._cups = deepcopy(env._init_cups[0])
+    env.cups = deepcopy(env.init_cups[0])
 
     for act, bot_loc, cup_1, cup_2, coll, termin, r in [
         (0, 2, 1, 1, 1, False, -1),
@@ -87,7 +85,7 @@ def test_move_left_cups_2():
     Do this with second initial two-cups configuration
     """
     env = TwoCupEnv()
-    env._cups = deepcopy(env._init_cups[1])
+    env.cups = deepcopy(env.init_cups[1])
 
     for act, bot_loc, cup_1, cup_2, coll, termin, r in [
         (0, 2, 1, 1, 1, False, -1),
@@ -113,7 +111,7 @@ def test_move_right_cups_1():
     Do this with first initial two-cups configuration
     """
     env = TwoCupEnv()
-    env._cups = deepcopy(env._init_cups[0])
+    env.cups = deepcopy(env.init_cups[0])
 
     for act, bot_loc, cup_1, cup_2, coll, termin, r in [
         (2, 4, 1, 1, 1, False, -1),
@@ -139,7 +137,7 @@ def test_move_right_cups_2():
     Do this with second initial two-cups configuration
     """
     env = TwoCupEnv()
-    env._cups = deepcopy(env._init_cups[1])
+    env.cups = deepcopy(env.init_cups[1])
 
     for act, bot_loc, cup_1, cup_2, coll, termin, r in [
         (2, 4, 1, 1, 1, False, -1),
@@ -162,6 +160,7 @@ def test_move_right_cups_2():
 def test_taking_no_cup():
     """Taking when there is no cup"""
     env = TwoCupEnv()
+    env.cups = deepcopy(env.init_cups[0])
 
     for act, bot_loc, cup_1, cup_2, coll, termin, r in [
         (1, 3, 1, 1, 1, False, -1),
@@ -179,7 +178,7 @@ def test_taking_no_cup():
 def test_retaking_cup():
     """Test retaking a cup"""
     env = TwoCupEnv()
-    env._cups = deepcopy(env._init_cups[0])
+    env.cups = deepcopy(env.init_cups[0])
 
     for act, bot_loc, cup_1, cup_2, coll, termin, r in [
         (2, 4, 1, 1, 1, False, -1),
@@ -202,7 +201,7 @@ def test_terminated_1():
     Do this with first initial two-cups configuration
     """
     env = TwoCupEnv()
-    env._cups = deepcopy(env._init_cups[0])
+    env.cups = deepcopy(env.init_cups[0])
 
     for act, bot_loc, cup_1, cup_2, coll, termin, r in [
         (2, 4, 1, 1, 1, False, -1),
@@ -229,7 +228,7 @@ def test_terminated_2():
     Do this with first initial two-cups configuration
     """
     env = TwoCupEnv()
-    env._cups = deepcopy(env._init_cups[1])
+    env.cups = deepcopy(env.init_cups[1])
 
     for act, bot_loc, cup_1, cup_2, coll, termin, r in [
         (0, 2, 1, 1, 1, False, -1),

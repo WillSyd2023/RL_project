@@ -47,12 +47,12 @@ class TwoCupEnv(gym.Env):
 
         # Initial bot location (always the same)
         # And bot location class attribute
-        self._init_bot_loc = np.array([3], dtype=np.int8)
-        self._bot_loc = deepcopy(self._init_bot_loc)
+        self.init_bot_loc = np.array([3], dtype=np.int8)
+        self.bot_loc = deepcopy(self.init_bot_loc)
 
         # Two options for initial cup attributes
         # And cup class attribute
-        self._init_cups = {
+        self.init_cups = {
             0: (
                 {
                     "position": np.array([0], dtype=np.int8),
@@ -74,12 +74,12 @@ class TwoCupEnv(gym.Env):
                 }
             )
         }
-        self._cups = deepcopy(self._init_cups[0])
+        self.cups = deepcopy(self.init_cups[0])
 
         # Initial collision value (always the same)
         # And collision attribute
-        self._init_collision = 1
-        self._collision = self._init_collision
+        self.init_collision = 1
+        self.collision = self.init_collision
 
     def __deepcopy__(self, memo):
         newone = type(self)()
@@ -87,28 +87,28 @@ class TwoCupEnv(gym.Env):
 
     def _get_obs(self):
         return {
-            "bot_position": deepcopy(self._bot_loc),
-            "cups": deepcopy(self._cups),
-            "collision_happened": self._collision,
+            "bot_position": deepcopy(self.bot_loc),
+            "cups": deepcopy(self.cups),
+            "collision_happened": self.collision,
         }
         
     def reset(self, *, seed: Optional[int] = None, options: Optional[dict] = None):
         super().reset(seed=seed)
 
         # Set bot's location
-        self._bot_loc = deepcopy(self._init_bot_loc)
+        self.bot_loc = deepcopy(self.init_bot_loc)
 
         # Initialise cups randomly
         randint = self.np_random.integers(0, 2, dtype=int)
-        self._cups = deepcopy(self._init_cups[randint])
+        self.cups = deepcopy(self.init_cups[randint])
 
         # Set collision attribute
-        self._collision = self._init_collision
+        self.collision = self.init_collision
 
         return self._get_obs(), None
 
     def step(self, action):
-        self._collision = 1
+        self.collision = 1
 
         reward = -1
         terminated = False
@@ -116,13 +116,13 @@ class TwoCupEnv(gym.Env):
 
         # If the action is to try to take a cup
         if action == 1:
-            cups = self._cups
+            cups = self.cups
 
             # If cup is indeed taken, then give reward
             # (and update cup presence)
             for cup in cups:
                 if (cup["presence"] == 1 and
-                    np.array_equal(self._bot_loc, cup["position"])):
+                    np.array_equal(self.bot_loc, cup["position"])):
                     cup["presence"] = 0
                     reward = 1
                     break
@@ -137,13 +137,13 @@ class TwoCupEnv(gym.Env):
         
         # If the action is to move left/right
         move = action - 1
-        next_loc = self._bot_loc + move
+        next_loc = self.bot_loc + move
 
         # Check for collision
         if np.all(next_loc < self._lo) or np.all(next_loc > self._hi):
-            self._collision = action
+            self.collision = action
         else:
-            self._bot_loc += move
+            self.bot_loc += move
         
         observation = self._get_obs()
         return observation, reward, terminated, truncated, None
