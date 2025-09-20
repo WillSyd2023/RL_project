@@ -85,7 +85,7 @@ class TwoCupEnv(gym.Env):
         newone = type(self)()
         return newone
 
-    def _get_obs(self):
+    def get_obs(self):
         return {
             "bot_position": deepcopy(self.bot_loc),
             "cups": deepcopy(self.cups),
@@ -105,7 +105,7 @@ class TwoCupEnv(gym.Env):
         # Set collision attribute
         self.collision = self.init_collision
 
-        return self._get_obs(), None
+        return self.get_obs(), None
 
     def step(self, action):
         self.collision = 1
@@ -132,7 +132,7 @@ class TwoCupEnv(gym.Env):
                 cups[1]["presence"] == 0):
                 terminated = True
 
-            observation = self._get_obs()
+            observation = self.get_obs()
             return observation, reward, terminated, truncated, None
         
         # If the action is to move left/right
@@ -145,7 +145,7 @@ class TwoCupEnv(gym.Env):
         else:
             self.bot_loc += move
         
-        observation = self._get_obs()
+        observation = self.get_obs()
         return observation, reward, terminated, truncated, None
 
     def render(self):
