@@ -95,6 +95,7 @@ class PolicyEvalQL():
         )
         self.medians = 0
         self.num_trials = 0
+        self.test_agent = None
 
     
     def train_steps(
@@ -166,6 +167,8 @@ class PolicyEvalQL():
                 total_reward += reward
                 done = terminated or truncated
                 obs = next_obs
+
+        self.test_agent = test_agent
 
         return total_reward/n_eps
 
