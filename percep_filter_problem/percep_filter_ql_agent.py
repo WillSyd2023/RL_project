@@ -49,7 +49,7 @@ class PercepFilterQLAgent(QLAgent):
         newone = type(self)(
             obs_filter=self.obs_filter,
             env=deepcopy(self.env),
-            learning_rate=self.lr,
+            learning_rate=self.learning_rate,
             initial_epsilon=self.initial_epsilon,
             epsilon_decay=self.epsilon_decay,
             final_epsilon=self.final_epsilon,
@@ -57,6 +57,7 @@ class PercepFilterQLAgent(QLAgent):
         )
         newone.epsilon = self.epsilon
         newone.q_values = deepcopy(self.q_values)
+        newone.random = deepcopy(self.random)
         return newone
 
     def get_action(self, obs):

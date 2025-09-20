@@ -1,7 +1,7 @@
 """RL QL Agent in Gymnasium"""
 
 from collections import defaultdict
-import copy
+from copy import deepcopy
 import numpy as np
 import gymnasium as gym
 
@@ -38,7 +38,7 @@ class QLAgent(Agent):
         super().__init__(env)
         self.q_values = defaultdict(lambda: np.zeros(env.action_space.n))
 
-        self.lr = learning_rate
+        self.learning_rate = learning_rate
         self.discount_factor = discount_factor
 
         self.initial_epsilon = initial_epsilon
@@ -51,8 +51,8 @@ class QLAgent(Agent):
 
     def __deepcopy__(self, memo):
         newone = type(self)(
-            env=copy.deepcopy(self.env),
-            learning_rate=self.lr,
+            env=deepcopy(self.env),
+            learning_rate=self.learning_rate,
             initial_epsilon=self.initial_epsilon,
             epsilon_decay=self.epsilon_decay,
             final_epsilon=self.final_epsilon,
@@ -60,7 +60,8 @@ class QLAgent(Agent):
             seed=self.seed,
         )
         newone.epsilon = self.epsilon
-        newone.q_values = copy.deepcopy(self.q_values)
+        newone.q_values = deepcopy(self.q_values)
+        newone.random = deepcopy(self.random)
         return newone
 
     def _get_action_core(self, obs: str) -> int:
@@ -99,7 +100,7 @@ class QLAgent(Agent):
         )
 
         self.q_values[obs][action] = (
-            self.q_values[obs][action] + self.lr * temporal_difference
+            self.q_values[obs][action] + self.learning_rate * temporal_difference
         )
         self.training_error.append(temporal_difference)
     
