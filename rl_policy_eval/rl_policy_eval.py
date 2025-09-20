@@ -148,7 +148,8 @@ class PolicyEvalQL():
         test_agent.learning_rate = 0
         test_agent.discount_factor = 0
         test_agent.initial_epsilon = 0
-        test_agent.epsilon = 0
+        test_agent.epsilon = 0 # to get epsilon == 0.1 you can modify
+        #                        e.g. just make it a comment
         test_agent.epsilon_decay = 0
         test_agent.final_epsilon = 0
 
