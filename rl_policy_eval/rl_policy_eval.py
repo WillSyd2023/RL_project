@@ -131,7 +131,6 @@ class PolicyEvalQL():
         on a (new) environment, get the average reward
 
         Args:
-            q_values: to be tested
             time_limit: for a single episode
             n_eps: number of episodes to play
 
@@ -139,7 +138,8 @@ class PolicyEvalQL():
         """
         # Copy environment from original and set time limit
         env = deepcopy(self.ori_test_env)
-        env = TimeLimit(env, max_episode_steps=time_limit)
+        if time_limit >= 0:
+            env = TimeLimit(env, max_episode_steps=time_limit)
 
         # Initialise agent for testing
         test_agent = deepcopy(self.ori_agent)
