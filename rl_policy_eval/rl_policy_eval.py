@@ -35,6 +35,7 @@ class PolicyEvalQL():
         epsilon_decay: float = 0,
         final_epsilon: float = 0.1,
         discount_factor: float = 0.99,
+        seed: int = 0,
     ):
         """
         Initialises the default training agent and environment
@@ -53,6 +54,12 @@ class PolicyEvalQL():
             epsilon_decay: The decay for epsilon
             final_epsilon: The final epsilon value
             discount_factor: The discount factor for computing the Q-value
+
+        Values initialised incl.:
+        - original (training) environment
+        - original testing environment
+        - original agent incl.
+            - Q-values
         """
         env = agent.env
         if env is None:
@@ -65,6 +72,7 @@ class PolicyEvalQL():
         self.ori_agent = agent
         self.ori_agent.learning_rate = learning_rate
         self.ori_agent.initial_epsilon = initial_epsilon
+        self.ori_agent.epsilon = initial_epsilon
         self.ori_agent.epsilon_decay = epsilon_decay
         self.ori_agent.final_epsilon = final_epsilon
         self.ori_agent.discount_factor = discount_factor
@@ -72,6 +80,9 @@ class PolicyEvalQL():
         if q_values is None:
             q_values = defaultdict(lambda: np.ones(env.action_space.n) * 1.0001)
         self.ori_agent.q_values = q_values
+
+        self.ori_agent.seed = seed
+        self.ori_agent.random = np.random.default_rng(seed)
 
         # Initialised values just in case
         self.training_env = self.original_env
