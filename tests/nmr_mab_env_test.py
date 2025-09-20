@@ -43,7 +43,7 @@ def test_deepcopy():
     assert env_copy.trace.head is not None
     assert env_copy.trace.size() == 6
 
-    # Deepcopy copies
+    # Deepcopy copies rewards
     assert env.rewards is not env_copy.rewards
     for i, ori_reward in enumerate(env.rewards):
         assert ori_reward is env_copy.rewards[i]
