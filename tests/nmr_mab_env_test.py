@@ -16,7 +16,7 @@ def test_reset():
 
     # Reset environment and get attributes
     for action in [0, 3, 4, 2, 1, 4]:
-        _, _, _, _, _ = env.step(action)
+        env.step(action)
     state, trace = env.reset()
     actions = env.actions
     rewards = env.rewards
@@ -33,11 +33,14 @@ def test_deepcopy():
     """
     env = NonMarkovMABEnv(rewards=[nm_reward_1, m_reward_4])
     for action in [0, 3, 4, 2, 1, 4]:
-        _, _, _, _, _ = env.step(action)
+        env.step(action)
     env_copy = deepcopy(env)
 
     # Deepcopy copies actions
     assert env_copy.actions == env.actions
+
+    # Deepcopy copies state
+    assert env_copy.state == env.state
 
     # Deepcopy does not reset trace
     assert env_copy.trace.head is not None
@@ -67,11 +70,11 @@ def test_steps_given_nm_rewards():
 
     for trace_size, action, r in test_cases:
         observation, reward, terminated, truncated, _ = nm_env.step(action)
-        assert nm_env.trace.size() == trace_size
         assert observation == "s"
+        assert reward == r
         assert terminated is False
         assert truncated is False
-        assert reward == r
+        assert nm_env.trace.size() == trace_size
 
 def test_steps_given_m_rewards():
     """Test step behavior of Markovian environment
@@ -90,8 +93,8 @@ def test_steps_given_m_rewards():
 
     for trace_size, action, r in test_cases:
         observation, reward, terminated, truncated, _ = m_env.step(action)
-        assert m_env.trace.size() == trace_size
         assert observation == "s"
+        assert reward == r
         assert terminated is False
         assert truncated is False
-        assert reward == r
+        assert m_env.trace.size() == trace_size
